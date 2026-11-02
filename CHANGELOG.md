@@ -24,7 +24,7 @@ All notable changes to Spellbook UI are documented here.
   content terms (engine and in-repo generated content = AGPL; downloadable
   packs = per-pack terms; scraped-derived content ships free, never sold);
   vendored asset notices (Inter OFL 1.1, Phosphor MIT).
-- **CI.** GitHub Actions: pytest (macOS Apple Silicon + Ubuntu, Python 3.11)
+- **CI.** GitHub Actions: pytest (Ubuntu, Python 3.11)
   plus a `node --check` pass over every web UI module.
 - **The prompt box, documented.** New README section with a screenshot:
   tag autocomplete from your own library's vocabulary, `⌘↑`/`⌘↓` weight
