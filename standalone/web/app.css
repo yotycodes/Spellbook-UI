@@ -992,6 +992,14 @@ h1, h3 { text-wrap: balance; }
 .set-key { display: flex; gap: 6px; margin-top: 6px; }
 .set-key .input { flex: 1; max-width: 340px; }
 .set-inline { margin-top: 6px; max-width: 280px; }
+/* dock icon variant picker */
+.dock-icon-picker { display: flex; gap: 10px; flex-wrap: wrap; }
+.dock-icon-opt { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px 10px 10px;
+  border: 1px solid var(--line-2); border-radius: var(--r-surf); background: var(--surface-2);
+  color: var(--muted); font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: border-color var(--dur-1), box-shadow var(--dur-1); }
+.dock-icon-opt img { width: 48px; height: 48px; border-radius: 11px; display: block; }
+.dock-icon-opt:hover { border-color: var(--line-hover); color: var(--text); }
+.dock-icon-opt.is-on { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); color: var(--text); }
 /* pose browser filters: one dropdown per group */
 .pose-filters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
 .pack-browser.big .pose-filters { grid-template-columns: repeat(6, minmax(0, 1fr)); }

@@ -88,11 +88,31 @@ final class SpellbookLauncher: NSObject, NSApplicationDelegate, NSWindowDelegate
         }
         port = selectedPort
         let home = FileManager.default.homeDirectoryForCurrentUser.path
-        // Config-style root discovery: an explicit SPELLBOOK_ROOT wins over the historical
-        // ~/Desktop location so the bundle can follow a moved checkout (Phase 4 portability).
-        let betaRoot = ProcessInfo.processInfo.environment["SPELLBOOK_ROOT"]
-            ?? "\(home)/Desktop/Spellbook-Beta"
-        let folder = "\(betaRoot)/standalone"
+        // appRoot resolution — three sources, first one wins:
+        //   1. SPELLBOOK_ROOT env var (set by the user or a wrapper script)
+        //   2. Contents/Resources/spellbook-root.txt inside the .app bundle
+        //   3. Two levels up from this executable (works when run as `swift SpellbookUILauncher.swift`)
+        let appRoot: String = {
+            if let envRoot = ProcessInfo.processInfo.environment["SPELLBOOK_ROOT"] {
+                return envRoot
+            }
+            // Bundle path: executable is at Contents/MacOS/SpellbookUI,
+            // so Contents/Resources/ is two levels up + Resources/
+            let execURL = URL(fileURLWithPath: CommandLine.arguments.first ?? "")
+            let resourcesURL = execURL.deletingLastPathComponent()   // Contents/MacOS
+                .deletingLastPathComponent()                          // Contents
+                .appendingPathComponent("Resources")
+            let rootFile = resourcesURL.appendingPathComponent("spellbook-root.txt")
+            if let stored = try? String(contentsOf: rootFile, encoding: .utf8).trimmingCharacters(in: .whitespacesAndNewlines),
+               !stored.isEmpty {
+                return stored
+            }
+            // Fallback: script-relative (dev mode — `swift SpellbookUILauncher.swift`)
+            return execURL.deletingLastPathComponent()   // standalone/
+                .deletingLastPathComponent()             // Spellbook-UI/
+                .path
+        }()
+        let folder = "\(appRoot)/standalone"
         let python = "\(folder)/.venv/bin/python"
         let server = "\(folder)/server.py"
         let process = Process()
@@ -104,13 +124,17 @@ final class SpellbookLauncher: NSObject, NSApplicationDelegate, NSWindowDelegate
         env.removeValue(forKey: "VIRTUAL_ENV")
         env.removeValue(forKey: "VIRTUAL_ENV_PROMPT")
         env.removeValue(forKey: "VIRTUAL_ENV_DISABLE_PROMPT")
-        env["SPELLBOOK_APP_DIR"] = "\(betaRoot)/.beta-data"
-        env["SPELLBOOK_POSE_KIT"] = "\(betaRoot)/.pose-kit"
+        // SPELLBOOK_APP_DIR is intentionally not set here: paths.py resolves the correct
+        // platform default (~/Library/Application Support/Spellbook on macOS) on its own.
+        // Only set SPELLBOOK_POSE_KIT if not already in the environment.
+        if env["SPELLBOOK_POSE_KIT"] == nil {
+            env["SPELLBOOK_POSE_KIT"] = "\(appRoot)/.pose-kit"
+        }
         env["PYTHONUNBUFFERED"] = "1"
         env.removeValue(forKey: "SSL_CERT_DIR")
         env["SSL_CERT_FILE"] = "\(folder)/.venv/lib/python3.11/site-packages/certifi/cacert.pem"
         process.environment = env
-        let logURL = URL(fileURLWithPath: "/tmp/spellbook-beta-launch.log")
+        let logURL = URL(fileURLWithPath: "/tmp/spellbook-launch.log")
         if !FileManager.default.fileExists(atPath: logURL.path) {
             FileManager.default.createFile(atPath: logURL.path, contents: nil)
         }
@@ -127,7 +151,7 @@ final class SpellbookLauncher: NSObject, NSApplicationDelegate, NSWindowDelegate
             self?.appendLaunchLog("Backend terminated: reason=\(reason), status=\(child.terminationStatus), pid=\(child.processIdentifier)")
             DispatchQueue.main.async {
                 guard let self, !self.shuttingDown else { return }
-                self.showError("Spellbook UI’s local server stopped unexpectedly (\(reason) \(child.terminationStatus)). See /tmp/spellbook-beta-launch.log for details.")
+                self.showError("Spellbook UI’s local server stopped unexpectedly (\(reason) \(child.terminationStatus)). See /tmp/spellbook-launch.log for details.")
             }
         }
         do {
@@ -135,7 +159,7 @@ final class SpellbookLauncher: NSObject, NSApplicationDelegate, NSWindowDelegate
             backend = process
         } catch {
             let details = error as NSError
-            showError("Could not start Spellbook’s local server (\(details.domain) \(details.code)): \(error.localizedDescription). See /tmp/spellbook-beta-launch.log.")
+            showError("Could not start Spellbook’s local server (\(details.domain) \(details.code)): \(error.localizedDescription). See /tmp/spellbook-launch.log.")
         }
     }
 
@@ -180,7 +204,7 @@ final class SpellbookLauncher: NSObject, NSApplicationDelegate, NSWindowDelegate
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.checkBackend() }
         } else {
             appendLaunchLog("Health check timed out after 300 seconds; backendRunning=\(backend?.isRunning ?? false)")
-            showError("Spellbook UI’s local server did not start on ports 7872–7887 after five minutes. See /tmp/spellbook-beta-launch.log for details.")
+            showError("Spellbook UI’s local server did not start on ports 7872–7887 after five minutes. See /tmp/spellbook-launch.log for details.")
         }
     }
 
@@ -294,7 +318,7 @@ final class SpellbookLauncher: NSObject, NSApplicationDelegate, NSWindowDelegate
     }
 
     private func appendLaunchLog(_ message: String) {
-        let url = URL(fileURLWithPath: "/tmp/spellbook-beta-launch.log")
+        let url = URL(fileURLWithPath: "/tmp/spellbook-launch.log")
         guard let log = try? FileHandle(forWritingTo: url) else { return }
         defer { try? log.close() }
         try? log.seekToEnd()
@@ -318,6 +342,22 @@ final class SpellbookLauncher: NSObject, NSApplicationDelegate, NSWindowDelegate
 
 let app = NSApplication.shared
 app.setActivationPolicy(.regular)
+
+// Set the dock icon. Resolution order:
+//   1. Contents/Resources/icon.png  (compiled .app bundle)
+//   2. icon.png next to this script (dev mode: `swift SpellbookUILauncher.swift`)
+// If neither exists the system falls back to its default.
+let _execURL = URL(fileURLWithPath: CommandLine.arguments.first ?? "")
+let _bundleIcon = _execURL
+    .deletingLastPathComponent()   // Contents/MacOS
+    .deletingLastPathComponent()   // Contents
+    .appendingPathComponent("Resources/icon.png")
+let _scriptIcon = _execURL.deletingLastPathComponent().appendingPathComponent("icon.png")
+let _iconPath = [_bundleIcon, _scriptIcon].first { FileManager.default.fileExists(atPath: $0.path) }?.path ?? ""
+if let _icon = NSImage(contentsOfFile: _iconPath) {
+    app.applicationIconImage = _icon
+}
+
 let delegate = SpellbookLauncher()
 app.delegate = delegate
 app.run()
