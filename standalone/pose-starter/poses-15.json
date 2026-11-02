@@ -1,0 +1,62 @@
+{
+ "victory_arms_up": {
+  "tags": "victorious, both arms raised high, fists clenched, standing tall, head tilted up, chest out, from front, full body",
+  "note": "Victory: both wrists well above the head line, feet planted wide; reads as triumph from the front."
+ },
+ "uppercut_rising": {
+  "tags": "uppercut, rising punch, from below, dynamic angle, bent knees, twisted torso, motion lines, action",
+  "note": "Uppercut: rear arm coiled low then whipping up; body compressed, weight on the back leg."
+ },
+ "kick_side_high": {
+  "tags": "side kick, high kick, one leg raised, kicking, from side, full body, dynamic, action, foreshortening",
+  "note": "Side kick: kicking leg near-horizontal at hip height; supporting leg slightly bent, torso leaning away."
+ },
+ "superhero_landing": {
+  "tags": "superhero landing, crouching, one fist on ground, dust, three-point landing, from front, low angle, action, dynamic pose",
+  "note": "Three-point landing: crouched low, one fist to the floor, other arm flared wide for balance."
+ },
+ "dash_running_blur": {
+  "tags": "running, sprinting, full speed, motion blur, from side, leaning forward, speed lines, action",
+  "note": "Sprint: torso leaned well past the hips, trailing leg kicked back, arms pumping opposite the legs."
+ },
+ "sword_rest_shoulder": {
+  "tags": "holding sword, resting blade on shoulder, relaxed stance, three quarter view, full body",
+  "note": "Blade-on-shoulder idle stance: front arm relaxed, rear arm holding the hilt near the collarbone."
+ },
+ "home_wave_hello": {
+  "tags": "waving, one hand raised, friendly, standing weight shift, smiling, three quarter view, full body, casual",
+  "note": "Wave hello: raised hand tilted slightly, weight over one hip, other hand relaxed at the side."
+ },
+ "home_sit_couch_lean_back": {
+  "tags": "sitting on couch, leaning back, relaxed, one arm along the backrest, legs crossed, from front, three quarter",
+  "note": "Couch lean: hips set low, knees together and crossed, spine open behind the shoulders."
+ },
+ "studio_arms_crossed": {
+  "tags": "arms crossed, confident, standing, from front, chest out, full body, portrait distance, studio light",
+  "note": "Arms crossed: forearms stacked over the chest line; a quietly certain wide stance."
+ },
+ "studio_hand_in_pocket_lean": {
+  "tags": "hand in pocket, leaning against wall, one knee bent, relaxed, from side, three quarter, full body",
+  "note": "Wall lean: shoulders back against the surface, one heel hooked on the wall, hand buried in pocket."
+ },
+ "studio_look_back_over_shoulder": {
+  "tags": "looking back, over shoulder, walking away, three quarter back view, from behind, coat, full body",
+  "note": "Over-shoulder glance mid-stride: hips away from camera, chest twisted toward the lens."
+ },
+ "portrait_hand_hip_contrapposto": {
+  "tags": "standing, contrapposto, one hand on hip, hip cocked, from front, waist up, portrait, elegant",
+  "note": "Contrapposto with hand on hip: hips counter-tilted to the shoulders; a calm pose at portrait distance."
+ },
+ "portrait_point_away": {
+  "tags": "pointing, extended arm, gesturing offscreen, three quarter, from front, expression, upper body",
+  "note": "Pointing offscreen: dominant arm at shoulder height, other arm easy; sell direction with the head."
+ },
+ "portrait_thinking_pose": {
+  "tags": "hand on chin, thinking, pensive, three quarter, portrait, waist up, standing",
+  "note": "Thinking: hand to the chin, other arm folded beneath the working elbow."
+ },
+ "outdoor_tree_pose_yoga": {
+  "tags": "tree pose, yoga, one leg raised, balance, standing, calm, from front, full body",
+  "note": "Tree pose: one foot pressed to the inner thigh, arms folded overhead on inhalation."
+ }
+}

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=Krita/PythonPlugin
+X-KDE-Library=krita_ai_bridge
+X-Python-2-Compatible=false
+Name=AI Prompt Bridge
+Comment=Lets the Prompt Library app send prompts + style to the AI Image Generation docker (127.0.0.1:8767)

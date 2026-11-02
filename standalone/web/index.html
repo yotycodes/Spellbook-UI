@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d0e10">
+  <title>Spellbook UI</title>
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="stylesheet" href="vendor/phosphor/style.css">
+  <link rel="stylesheet" href="vendor/phosphor/fill.css">
+  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="themes.css">
+  <script>try {   /* saved theme before first paint; themes renamed in v0.3.30 map to their replacements */
+    const old = { midnight: "midnight-graphite", ember: "warm-paper", forest: "sage-studio", rose: "cherry-noir" };
+    let t = localStorage.getItem("pl-theme"); if (old[t]) { t = old[t]; localStorage.setItem("pl-theme", t); }
+    if (t && t !== "graphite") document.documentElement.dataset.theme = t;
+  } catch {}</script>
+</head>
+<body>
+  <div class="boot-overlay" id="bootOverlay" aria-hidden="true">
+    <img class="boot-logo" src="icon.png" alt="">
+    <div class="boot-bar"><span></span></div>
+    <p class="boot-stage" id="bootStage">Connecting…</p>
+  </div>
+  <script>setTimeout(() => { const el = document.getElementById("bootOverlay"); if (el) { el.classList.add("done"); setTimeout(() => el.remove(), 500); } }, 30000);</script>
+  <div class="app" id="app">
+    <!-- generation status that follows you to the other views -->
+    <button class="gen-pill" id="genPill" hidden title="Open Generate  (1)">
+      <img id="genPillImg" alt="" hidden>
+      <span class="gp-text"><b id="genPillTitle"></b><span id="genPillSub"></span></span>
+      <span class="gp-close" id="genPillClose" role="button" aria-label="Hide until the next image"><i class="ph ph-x"></i></span>
+      <span class="gp-bar"><span id="genPillBar"></span></span>
+    </button>
+    <nav class="rail" aria-label="Main">
+      <img class="rail-logo" src="icon.png" alt="Spellbook UI">
+      <button class="rail-btn" data-view="generate" title="Generate  (1)"><i class="ph ph-magic-wand"></i><span>Generate</span><span class="rail-badge" id="genBadge" hidden></span></button>
+      <button class="rail-btn is-active" data-view="library" title="Library  (2)"><i class="ph ph-squares-four"></i><span>Library</span></button>
+      <button class="rail-btn" data-view="collections" title="Collections  (3)"><i class="ph ph-bookmarks-simple"></i><span>Collections</span></button>
+      <button class="rail-btn" data-view="interrogate" title="Interrogate: image to prompt  (4)"><i class="ph ph-scan"></i><span>Interrogate</span></button>
+      <hr class="rail-sep" aria-hidden="true">
+      <button class="rail-btn" data-view="settings" title="Settings  (5 or ⌘,)"><i class="ph ph-gear-six"></i><span>Settings</span></button>
+      <div class="rail-spacer"></div>
+      <button class="krita-status forge-switch" id="helpBtn" title="Keyboard shortcuts  (?)"><i class="ph ph-keyboard"></i><span class="krita-label">Keys</span></button>
+      <button class="krita-status forge-switch" id="forgeStatus" title="Forge is off. Click to start it">
+        <i class="ph ph-power"></i><span class="krita-label">Forge</span><span class="state-dot"></span><span class="sr-only" id="forgeSr">off</span>
+      </button>
+      <div class="krita-status" id="kritaStatus" title="Krita connection">
+        <i class="ph ph-plugs"></i><span class="krita-label">Krita</span><span class="state-dot"></span><span class="sr-only" id="kritaSr">not connected</span>
+      </div>
+    </nav>
+
+    <!-- LIBRARY -->
+    <main class="view is-active" id="view-library">
+      <h1 class="sr-only">Library</h1>
+      <header class="toolbar">
+        <div class="search">
+          <i class="ph ph-magnifying-glass"></i>
+          <input id="q" type="search" placeholder="Search prompts, tags or characters…" autocomplete="off" spellcheck="false" list="qList">
+          <datalist id="qList"></datalist>
+          <kbd>/</kbd>
+        </div>
+        <label class="field"><span>Base</span><select id="f-base"></select></label>
+        <label class="field field-wide"><span>Theme</span><select id="f-theme"></select></label>
+        <label class="field"><span>Rating</span><select id="f-rating"></select></label>
+        <label class="field"><span>Collection</span><select id="f-collection"></select></label>
+        <button class="toggle" id="f-runnable" aria-pressed="false" title="Only prompts that use your Illustrious models and installed LoRAs">
+          <i class="ph ph-check-circle"></i>Runnable
+        </button>
+      </header>
+      <div class="activechips" id="activeChips"></div>
+      <section class="grid-wrap" id="gridWrap">
+        <div class="char-card" id="charCard" hidden></div>
+        <div class="grid" id="grid"></div>
+        <div class="empty" id="gridEmpty" hidden>
+          <i class="ph ph-image-broken"></i>
+          <h3>No prompts match</h3>
+          <p>Try a different theme, clear the search, or turn off Runnable.</p>
+          <button class="btn" id="clearFilters">Clear filters</button>
+        </div>
+      </section>
+      <footer class="pager">
+        <div class="pager-left">
+          <div class="pager-count" id="pagerCount">Loading library…</div>
+          <label class="pager-sort"><span class="pg-lbl">Sort</span> <select id="f-sort" aria-label="Sort results"></select></label>
+        </div>
+        <div class="pager-nav">
+          <button class="icon-btn" id="pgFirst" aria-label="First page" title="First page"><i class="ph ph-caret-double-left"></i></button>
+          <button class="icon-btn" id="pgPrev" aria-label="Previous page  ([)" title="Previous page  ([)"><i class="ph ph-caret-left"></i></button>
+          <span class="pager-page"><span class="pg-lbl">Page</span> <input id="pgInput" type="number" min="1" value="1" aria-label="Page"> of <b id="pgTotal">1</b></span>
+          <button class="icon-btn" id="pgNext" aria-label="Next page  (])" title="Next page  (])"><i class="ph ph-caret-right"></i></button>
+          <button class="icon-btn" id="pgLast" aria-label="Last page" title="Last page"><i class="ph ph-caret-double-right"></i></button>
+        </div>
+        <div class="pager-right">
+        <div class="seg" id="cardSize" role="group" aria-label="Thumbnail size">
+          <button data-v="s" title="Small thumbnails  (−)"><i class="ph ph-squares-four"></i></button><button data-v="m" class="is-on" title="Medium thumbnails"><i class="ph ph-grid-four"></i></button><button data-v="l" title="Large thumbnails  (=)"><i class="ph ph-square"></i></button>
+        </div>
+        <div class="seg" id="perPage" role="group" aria-label="Results per page">
+          <button data-v="60">60</button><button data-v="120" class="is-on">120</button><button data-v="240">240</button><button data-v="480">480</button>
+        </div>
+        </div>
+      </footer>
+    </main>
+
+    <!-- COLLECTIONS -->
+    <main class="view" id="view-collections">
+      <header class="page-head"><h1>Collections</h1><p>Saved prompts, grouped your way. Open one to browse it in the library.</p></header>
+      <section class="collections" id="collections"></section>
+    </main>
+
+    <!-- INTERROGATE -->
+    <main class="view" id="view-interrogate">
+      <header class="page-head"><h1>Interrogate</h1><p>Turn an image into a prompt, pick the tags you want, and send it to Krita with the image as reference.</p></header>
+      <section class="split">
+        <div class="pane">
+          <label class="dropzone" id="dropzone">
+            <input type="file" id="ifile" accept="image/*" hidden aria-label="Upload image for interrogation">
+            <div class="dz-empty"><i class="ph ph-image-square"></i><b>Drop an image</b><span>or click to choose a file</span></div>
+            <img id="ipreview" alt="" hidden>
+          </label>
+          <div class="form-row">
+            <label class="field grow"><span>Target preset</span><select id="ipreset"></select></label>
+            <label class="field"><span>Engine</span><select id="iengine"></select></label>
+          </div>
+          <button class="btn btn-primary btn-block" id="irun" disabled><i class="ph ph-sparkle"></i>Interrogate</button>
+          <div class="label-row"><span>Recent</span><span class="muted">Drop, click or <kbd>⌘V</kbd> to paste an image</span></div>
+          <div class="history" id="ihistory"></div>
+        </div>
+        <div class="pane" id="iresult">
+          <div class="placeholder"><i class="ph ph-text-aa"></i><p>The prompt appears here.</p></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- CLEANER -->
+    <main class="view" id="view-cleaner">
+      <header class="page-head"><h1>Tag Cleaner</h1><p>Removes duplicate tags, fixes common typos and keeps one framing tag.</p></header>
+      <section class="split">
+        <div class="pane">
+          <div class="label-row"><span>Prompt</span></div>
+          <textarea id="cin" class="ta ta-tall" placeholder="Paste a prompt…"></textarea>
+          <div class="form-row">
+            <div class="seg" id="ckind"><button class="is-on" data-v="pos">Positive</button><button data-v="neg">Negative</button></div>
+            <button class="toggle is-on" id="cframe" aria-pressed="true"><i class="ph ph-frame-corners"></i>One framing tag</button>
+            <button class="btn btn-primary" id="crun"><i class="ph ph-broom"></i>Clean</button>
+          </div>
+        </div>
+        <div class="pane">
+          <div class="label-row"><span>Cleaned</span><button class="icon-btn" data-copy="#cout" aria-label="Copy" title="Copy"><i class="ph ph-copy"></i></button></div>
+          <textarea id="cout" class="ta ta-tall" readonly></textarea>
+          <ul class="changes" id="cnotes"></ul>
+        </div>
+      </section>
+    </main>
+
+    <!-- SETTINGS -->
+    <main class="view" id="view-settings">
+      <header class="page-head"><h1>Settings</h1><p>What Spellbook is connected to, and where your files go. Changes apply right away.</p></header>
+      <div class="settings">
+        <section class="set-card">
+          <div class="set-head"><h2>Appearance</h2></div>
+          <div class="set-row set-row-stack">
+            <div class="set-main"><b>Theme</b><span class="muted">Click a theme to preview it on the whole app, then Apply. Images keep their own colors.</span></div>
+            <div class="theme-grid" id="setTheme" role="radiogroup" aria-label="Theme"></div>
+            <div class="theme-bar" id="setThemeBar" hidden><span id="setThemeBarText"></span>
+              <button class="btn btn-sm" id="setThemeCancel">Cancel<kbd>esc</kbd></button><button class="btn btn-sm btn-primary" id="setThemeApply"><i class="ph ph-check"></i>Apply</button></div>
+            <button class="linkbtn theme-reset" id="setThemeReset"><i class="ph ph-arrow-counter-clockwise"></i>Back to Graphite</button>
+          </div>
+          <div class="set-row">
+            <div class="set-main"><b>UI density</b><span class="muted">More space or more content. Saved automatically.</span></div>
+            <div class="seg" role="radiogroup" aria-label="UI density">
+              <button role="radio" aria-checked="true" data-d="comfortable">Comfortable</button>
+              <button role="radio" aria-checked="false" data-d="compact">Compact</button>
+              <button role="radio" aria-checked="false" data-d="relaxed">Relaxed</button>
+            </div>
+          </div>
+          <div class="set-row">
+            <div class="set-main"><b>Dark mode</b><span class="muted">System follows your OS; Light and Dark are forced.</span></div>
+            <div class="seg" role="radiogroup" aria-label="Dark mode">
+              <button role="radio" aria-checked="true" data-dm="auto">Auto</button>
+              <button role="radio" aria-checked="false" data-dm="dark">Dark</button>
+              <button role="radio" aria-checked="false" data-dm="light">Light</button>
+            </div>
+          </div>
+        </section>
+        <section class="set-card">
+          <div class="set-head"><h2>Connections</h2><button class="btn btn-sm" id="setRefresh"><i class="ph ph-arrows-clockwise"></i>Check all</button></div>
+          <div id="setConn"></div>
+        </section>
+        <section class="set-card">
+          <div class="set-head"><h2>Folders</h2></div>
+          <div id="setFolders"></div>
+        </section>
+        <section class="set-card">
+          <div class="set-head"><h2>Interrogate</h2></div>
+          <div class="set-row">
+            <div class="set-main"><b>Tag confidence</b><span class="muted">Lower finds more tags; higher keeps only the sure ones.</span></div>
+            <div class="set-ctl"><input class="input num" id="setGen" type="number" min="0.05" max="0.95" step="0.05" aria-label="General tag threshold" inputmode="decimal"><span class="muted small">tags</span>
+              <input class="input num" id="setChar" type="number" min="0.05" max="0.95" step="0.05" aria-label="Character tag threshold" inputmode="decimal"><span class="muted small">characters</span></div>
+          </div>
+        </section>
+        <p class="muted small" id="setAbout"></p>
+      </div>
+    </main>
+
+    <!-- GENERATE -->
+    <main class="view" id="view-generate">
+      <h1 class="sr-only">Generate</h1>
+      <div class="gen">
+        <aside class="gen-controls">
+          <div class="gen-scroll">
+            <p class="style-meta" id="gBackendInfo" role="status"></p>
+            <div class="gen-style">
+              <div class="label-row"><span>Style</span><span class="muted">your Krita styles</span></div>
+              <div class="style-card">
+                <i class="ph ph-paint-brush-broad"></i>
+                <select id="gStyle" aria-label="Style"></select>
+                <span class="style-override" id="gStyleOverride" hidden>Modified <button class="linkbtn" id="gStyleRevert">Reset</button></span>
+              </div>
+              <p class="style-meta" id="gStyleMeta">Manual: you set the checkpoint, LoRAs and settings below.</p>
+              <details class="disclosure" id="gStyleBox" hidden>
+                <summary>What the style adds</summary>
+                <div class="style-adds"><b>Prompt</b><code id="gStylePrompt"></code><b>Negative</b><code id="gStyleNeg"></code></div>
+              </details>
+            </div>
+            <label class="field"><span>Project</span><input id="gProject" class="input" list="gProjList" placeholder="Optional, e.g. Vale room…" autocomplete="off" spellcheck="false"></label>
+            <datalist id="gProjList"></datalist>
+            <div class="label-row"><span>Prompt</span><span class="muted">Tab completes tags · ⌘↑/⌘↓ weight</span><button class="icon-btn" data-clean="#gPrompt" aria-label="Clean tags (removes duplicates, typos & extra framing)" title="Clean tags (removes duplicates, typos & extra framing)"><i class="ph ph-broom"></i></button><button class="icon-btn" data-copy="#gPrompt" aria-label="Copy" title="Copy"><i class="ph ph-copy"></i></button></div>
+            <textarea id="gPrompt" class="ta" placeholder="Describe the image, or send one from the library…"></textarea>
+            <div class="label-row" id="gNegativeLabel"><span>Negative</span></div>
+            <textarea id="gNeg" class="ta ta-short"></textarea>
+            <div class="grid2">
+              <label class="field"><span>Seed</span><div class="seed-row"><input id="gSeed" class="input" type="number" placeholder="Random"><button class="icon-btn" id="gSeedLast" aria-label="Use the last image's seed" title="Use the last image's seed"><i class="ph ph-arrow-counter-clockwise"></i></button><button class="icon-btn" id="gSeedRand" aria-label="Random seed" title="Random seed"><i class="ph ph-shuffle"></i></button></div></label>
+              <label class="field"><span>Images</span><div class="stepper"><button class="icon-btn" data-step="-1" aria-label="Fewer" title="Fewer"><i class="ph ph-minus"></i></button><input id="gCount" class="input" type="number" min="1" max="16" value="1"><button class="icon-btn" data-step="1" aria-label="More" title="More"><i class="ph ph-plus"></i></button></div></label>
+            </div>
+            <nav class="gen-subtabs" id="genSubTabs" role="tablist" aria-label="Generator sections">
+              <button class="gen-subtab is-on" data-tab="tune" role="tab" aria-selected="true"><i class="ph ph-sliders"></i>Tune</button>
+              <button class="gen-subtab" data-tab="poses" role="tab" aria-selected="false"><i class="ph ph-person-simple-run"></i>Poses & Ref<span class="tab-indicator" id="indPoses" hidden></span></button>
+              <button class="gen-subtab" data-tab="enhance" role="tab" aria-selected="false"><i class="ph ph-sparkle"></i>Enhance<span class="tab-indicator" id="indEnhance" hidden></span></button>
+              <button class="gen-subtab" data-tab="batch" role="tab" aria-selected="false"><i class="ph ph-stack"></i>Batch<span class="tab-indicator" id="indBatch" hidden></span></button>
+            </nav>
+
+            <!-- SUBPANE: TUNE -->
+            <div class="gen-subpane is-on" data-pane="tune">
+              <div class="label-row"><span>LoRAs</span><span class="muted">click to add</span></div>
+              <div class="lora-pick" id="gLoraControls">
+                <input id="gLoraQ" class="input" placeholder="Search installed LoRAs…" spellcheck="false" list="gLoraList" autocomplete="off">
+                <datalist id="gLoraList"></datalist>
+                <div class="chips" id="gLoras"></div>
+              </div>
+              <label class="field" id="gCheckpointControl"><span>Checkpoint</span><select id="gModel"></select></label>
+              <div class="grid2">
+                <label class="field"><span>Sampler</span><select id="gSampler"></select></label>
+                <label class="field"><span>Schedule</span><select id="gScheduler"></select></label>
+              </div>
+              <div class="slider-row"><span>Steps</span><input type="range" id="gSteps" min="1" max="80" step="1"><input class="num" id="gStepsN" type="number" min="1" max="150"></div>
+              <div class="slider-row"><span>CFG</span><input type="range" id="gCfg" min="1" max="15" step="0.5"><input class="num" id="gCfgN" type="number" min="1" max="30" step="0.5"></div>
+              <div class="label-row"><span>Size</span><span class="muted" id="gSizeLabel"></span></div>
+              <div class="seg size-seg" id="gSize">
+                <button data-w="832" data-h="1216" title="832×1216"><i class="ph ph-rectangle"></i>Portrait</button>
+                <button data-w="1024" data-h="1024" title="1024×1024"><i class="ph ph-square"></i>Square</button>
+                <button data-w="1216" data-h="832" title="1216×832"><i class="ph ph-rectangle rot"></i>Landscape</button>
+                <button data-w="768" data-h="1344" title="768×1344"><i class="ph ph-device-mobile"></i>Tall</button>
+              </div>
+              <div class="grid2">
+                <label class="field"><span>Width</span><input id="gW" class="input" type="number" step="8" min="256" max="2048"></label>
+                <label class="field"><span>Height</span><input id="gH" class="input" type="number" step="8" min="256" max="2048"></label>
+              </div>
+              <div class="slider-row" title="Resize keeping the shape. 100% = the model's native ~1 megapixel size. Smaller is faster for tests; bigger adds detail but SDXL can repeat things above ~150%."><span>Scale</span><input type="range" id="gScale" min="50" max="200" step="5" value="100" aria-label="Image scale"><input class="num" id="gScaleN" type="number" min="25" max="250" step="5" aria-label="Image scale percent"></div>
+            </div>
+
+            <!-- SUBPANE: POSES & REF -->
+            <div class="gen-subpane" data-pane="poses">
+              <div class="gen-card" id="gPoseBox">
+                <div class="panel-head"><span>Pose control</span><span class="muted" id="gPoseState">off</span></div>
+                <button class="toggle is-on" id="gPoseTags" aria-pressed="true"><i class="ph ph-text-aa"></i>Add the pose's tags to the prompt</button>
+                <button class="toggle is-on" id="gPoseFacing" aria-pressed="true" title="Back pose: removes front-only words (breasts, navel, cleavage; looking at viewer and face words when no face shows). Front pose: removes from behind, looking back, bare back. Runs when you pick a pose and again at Generate."><i class="ph ph-arrows-counter-clockwise"></i>Remove words facing the other way</button>
+                <div class="pack-browser" id="gPacks"></div>
+                <div class="pose-batch" id="gPoseBatch" hidden>
+                  <div class="label-row"><span>Batch poses</span><span class="muted" id="gPoseBatchNote"></span></div>
+                  <div class="pb-list" id="gPoseBatchList"></div>
+                  <button class="linkbtn" id="gPoseBatchClear"><i class="ph ph-x"></i>Clear batch</button>
+                </div>
+                <div class="slider-row"><span>Strength</span><input type="range" id="gPoseW" min="0.3" max="1.2" step="0.05" value="0.8"><input class="num" id="gPoseWN" type="number" min="0" max="2" step="0.05"></div>
+                <div class="label-row"><span>Depth</span><span class="muted" id="gDepthNote">pick a pose</span></div>
+                <button class="toggle is-on" id="gPoseDepth" aria-pressed="true" title="When the pose has a depth map (D on the tile), also follow it: body shape, which limb is in front. Big help for sitting, lying, leaning and back poses. Poses without one use the skeleton only."><i class="ph ph-cube"></i>Use depth when the pose has one</button>
+                <div class="slider-row" id="gDepthRow" hidden><span>Depth</span><input type="range" id="gDepthW" min="0.2" max="0.9" step="0.05" value="0.45" title="Higher copies the depth body more closely (its figure too); lower lets the style decide"><input class="num" id="gDepthWN" type="number" min="0" max="1.5" step="0.05"></div>
+                <div class="label-row"><span>Priority</span><span class="muted">who wins when they disagree</span></div>
+                <div class="seg pose-opt" id="gPoseMode" role="group" aria-label="Pose priority">
+                  <button data-v="auto" class="is-on" aria-pressed="true" title="Pose first when the prompt uses 2 or more LoRAs, otherwise balanced">Auto</button><button data-v="balanced" aria-pressed="false">Balanced</button><button data-v="pose" aria-pressed="false" title="Pose first (ControlNet is more important): use when LoRAs bend the body">Pose</button><button data-v="prompt" aria-pressed="false" title="Prompt first (my prompt is more important): ControlNet follows the skeleton more loosely. Words that fight the pose still come out">Prompt</button>
+                </div>
+                <div class="label-row"><span>Pose check</span><span class="muted">scores each image, can retry new seeds</span></div>
+                <div class="seg pose-opt" id="gPoseMin" role="group" aria-label="Pose check">
+                  <button data-v="-1" aria-pressed="false" title="Don't check">Off</button><button data-v="0" class="is-on" aria-pressed="true" title="Show a pose match % on each image">Score</button><button data-v="60" aria-pressed="false" title="Below 60%: try up to 2 more seeds">Retry 60</button><button data-v="75" aria-pressed="false" title="Below 75%: try up to 2 more seeds">Retry 75</button>
+                </div>
+                <p class="muted small">9,000+ poses, auto-tagged by what the body is doing. Click the selected pose again to turn it off.</p>
+              </div>
+              <div class="gen-card" id="gRemixBox">
+                <div class="panel-head"><span>Start from an image (Remix)</span><span class="muted" id="gRemixState">off</span></div>
+                <label class="dropzone mini" id="gRemixDrop">
+                  <input type="file" id="gRemixFile" accept="image/*" hidden aria-label="Upload image for remix">
+                  <div class="dz-empty"><i class="ph ph-image-square"></i><b>Drop an image</b><span>photo, sketch or render to restyle</span></div>
+                  <img id="gRemixImg" alt="" hidden>
+                </label>
+                <div class="slider-row"><span>Change</span><input type="range" id="gDen" min="0.1" max="0.95" step="0.05" value="0.55"><input class="num" id="gDenN" type="number" min="0" max="1" step="0.05"></div>
+                <p class="muted small">Low keeps the picture, high mostly keeps the layout. The size follows the image.</p>
+                <div class="remix-actions">
+                  <button class="btn btn-sm" id="gRemixInterrogate" title="Extract prompt tags from this image using Interrogate"><i class="ph ph-scan"></i>Interrogate tags</button>
+                  <button class="btn btn-sm" id="gRemixClear"><i class="ph ph-x"></i>Clear image</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- SUBPANE: ENHANCE -->
+            <div class="gen-subpane" data-pane="enhance">
+              <div class="gen-card" id="gHiresBox">
+                <div class="panel-head"><span>Hires fix (Upscale)</span><span class="muted" id="gHiresState">off</span></div>
+                <button class="toggle" id="gHires" aria-pressed="false"><i class="ph ph-arrows-out"></i>Upscale while generating</button>
+                <label class="field"><span>Upscaler</span><select id="gHrUp"></select></label>
+                <div class="slider-row"><span>Scale</span><input type="range" id="gHrScale" min="1" max="2.5" step="0.05" value="1.5" title="1× = second detail pass at the same size, no upscale"><input class="num" id="gHrScaleN" type="number" min="1" max="4" step="0.05"></div>
+                <div class="slider-row"><span>Denoise</span><input type="range" id="gHrDen" min="0.1" max="0.8" step="0.05" value="0.4"><input class="num" id="gHrDenN" type="number" min="0" max="1" step="0.05"></div>
+                <div class="slider-row"><span>Steps</span><input type="range" id="gHrSteps" min="0" max="40" step="1" value="0"><input class="num" id="gHrStepsN" type="number" min="0" max="80"></div>
+                <p class="muted small">Hires steps 0 = same as the main pass. Slow on a Mac: roughly 3–4× the time. Upscale in the gallery uses these settings too.</p>
+              </div>
+              <div class="gen-card">
+                <div class="panel-head"><span>Anatomy & Fixes</span><span class="muted">ADetailer</span></div>
+                <div class="fix-row">
+                  <button class="toggle" id="gFixBody" aria-pressed="false" title="Redraws the whole figure gently (strength 0.35) to clean up anatomy: limbs, torso, proportions. Keeps the pose. Runs before faces and hands."><i class="ph ph-person"></i>Fix body</button>
+                  <button class="toggle" id="gFixFace" aria-pressed="false"><i class="ph ph-smiley"></i>Fix faces</button>
+                  <button class="toggle" id="gFixHands" aria-pressed="false"><i class="ph ph-hand"></i>Fix hands</button>
+                </div>
+                <p class="muted small">Adds ~20s each. Face and hand fixes run on crops for maximum sharpness.</p>
+              </div>
+            </div>
+
+            <!-- SUBPANE: BATCH -->
+            <div class="gen-subpane" data-pane="batch">
+              <div class="gen-card" id="gBatchBox">
+                <div class="panel-head"><span id="gBatchTitle">Batch & Comparisons</span><span class="muted" id="gBatchState">1 job</span></div>
+                <div id="gCompareControls">
+                <div class="label-row"><span>Compare styles</span><span class="muted">one job per style</span></div>
+                <input id="gCmpQ" class="input" placeholder="Filter styles…" autocomplete="off" spellcheck="false">
+                <div class="check-list" id="gCmp"></div>
+                <button class="toggle is-on" id="gSameSeed" aria-pressed="true" title="Every job in the batch gets the same seed (the Seed box, or one random seed), so styles, models and poses are compared fairly"><i class="ph ph-equals"></i>Same seed for every job</button>
+                <p class="muted small">Batches of 2+ jobs open as a side-by-side comparison: models or styles across, poses down.</p>
+                </div>
+                <div class="label-row"><span>Wildcards</span><span class="muted" id="gWildInfo">none in prompt</span></div>
+                <p class="muted small">Write <code>{red|blue|green} hair</code> in the prompt. Each image picks one, or run every combination.</p>
+                <div class="seg" id="gWildMode"><button data-v="random" class="is-on">Random per image</button><button data-v="all">Every combination</button></div>
+                <div class="label-row"><span>Queue a collection</span><span class="muted">uses the settings above</span></div>
+                <div class="seed-row"><select id="gColl" class="input" aria-label="Collection"></select><button class="btn" id="gCollRun"><i class="ph ph-stack"></i>Queue</button></div>
+                <button class="toggle is-on" id="gNotify" aria-pressed="true"><i class="ph ph-bell"></i>Notify me when the queue finishes</button>
+                <button class="toggle is-on" id="gAwake" aria-pressed="true"><i class="ph ph-moon"></i>Keep the Mac awake while the queue runs</button>
+              </div>
+            </div>
+          </div>
+          <div class="gen-go">
+            <button class="btn btn-primary btn-block" id="gRun"><i class="ph ph-sparkle"></i>Generate<kbd>⌘↵</kbd></button>
+            <button class="btn btn-block" id="gStop" hidden><i class="ph ph-stop-circle"></i>Stop current image</button>
+          </div>
+        </aside>
+        <section class="gen-main">
+          <div class="forge-bar" id="forgeBar">
+            <span class="forge-pill" id="forgePill"><span class="state-dot"></span><b id="forgeState">Forge is off</b><span class="muted" id="forgeDetail"></span></span>
+            <button class="btn" id="forgeToggle"><i class="ph ph-power"></i><span>Start Forge</span></button>
+          </div>
+          <div class="gen-stage" id="gStage">
+            <div class="placeholder" id="gEmpty"><i class="ph ph-magic-wand"></i><p id="gEmptyText">Your images appear here.</p></div>
+            <img id="gPreview" alt="" hidden>
+            <div class="gen-progress" id="gProg" hidden>
+              <div class="bar"><span id="gBar"></span></div>
+              <div class="gen-progress-text"><span id="gProgText">Starting…</span><span id="gEta"></span></div>
+            </div>
+          </div>
+          <div class="queue" id="gQueue" hidden>
+            <div class="label-row"><span>Queue</span><span class="muted" id="gQueueInfo"></span>
+              <button class="btn btn-sm" id="gQueuePauseAfter" hidden title="Finish current image, then pause queue"><i class="ph ph-pause"></i>Pause after current</button>
+              <button class="btn btn-sm btn-primary" id="gQueueResume" hidden title="Run the jobs saved from your last session"><i class="ph ph-play"></i>Resume</button>
+              <button class="btn btn-sm" id="gQueueDiscard" hidden title="Remove the saved jobs">Discard saved</button>
+              <button class="btn btn-sm" id="gQueueClear" title="Remove finished jobs from the list">Clear finished</button>
+              <button class="btn btn-sm" id="gQueueCancel"><i class="ph ph-stop-circle"></i>Cancel all</button></div>
+            <ul class="queue-list" id="gQueueList"></ul>
+          </div>
+          <div class="gal-head">
+            <span class="label-strong">Gallery</span><span class="muted" id="gGalCount"></span>
+            <div class="gal-filters">
+              <div class="seg" id="gGalStar"><button data-v="all" class="is-on">All</button><button data-v="star"><i class="ph-fill ph-star"></i>Starred</button></div>
+              <select id="gGalStyle" class="input sm" aria-label="Filter by style"></select>
+              <select id="gGalProj" class="input sm" aria-label="Filter by project"></select>
+              <select id="gGalDate" class="input sm" aria-label="Filter by date"><option value="all">Any time</option><option value="1">Today</option><option value="7">This week</option><option value="30">This month</option></select>
+              <button class="toggle sm" id="gGalSelect" aria-pressed="false"><i class="ph ph-check-square"></i>Select</button>
+            </div>
+          </div>
+          <div class="gal-actions" id="gGalActions" hidden>
+            <span id="gGalSelCount">0 selected</span>
+            <button class="btn btn-sm" data-act="star"><i class="ph ph-star"></i>Star</button>
+            <button class="btn btn-sm" data-act="unstar"><i class="ph ph-star-half"></i>Unstar</button>
+            <button class="btn btn-sm" data-act="fix" title="Fix face, hands or body on every selected image"><i class="ph ph-bandaids"></i>Fix…</button>
+            <button class="btn btn-sm" data-act="compare" title="Two images side by side, or a grid for 3 or more"><i class="ph ph-columns"></i>Compare</button>
+            <button class="btn btn-sm" data-act="export" title="Copy to Pictures/Prompt Library with prompts"><i class="ph ph-export"></i>Export</button>
+            <button class="btn btn-sm danger" data-act="delete"><i class="ph ph-trash"></i>Delete</button>
+            <button class="btn btn-sm" data-act="all">Select all</button>
+          </div>
+          <div class="gal" id="gGal"></div>
+        </section>
+      </div>
+    </main>
+
+    <!-- INSPECTOR -->
+    <aside class="inspector" id="inspector" aria-label="Prompt details" inert>
+      <div class="insp-head">
+        <img class="insp-thumb" id="iThumb" alt="">
+        <div class="insp-meta">
+          <div class="insp-title">#<span id="iId"></span></div>
+          <div class="insp-sub"><span id="iBase"></span><span class="sep"></span><i class="ph-fill ph-heart"></i><span id="iReact"></span></div>
+          <div class="badge" id="iRun"></div>
+        </div>
+        <div class="insp-actions">
+          <button class="icon-btn" id="iSave" aria-label="Save to collection  (S)" title="Save to collection  (S)"><i class="ph ph-bookmark-simple"></i></button>
+          <button class="icon-btn" id="iOpen" aria-label="Open on Civitai" title="Open on Civitai"><i class="ph ph-arrow-square-out"></i></button>
+          <button class="icon-btn" id="iClose" aria-label="Close  (Esc)" title="Close  (Esc)"><i class="ph ph-x"></i></button>
+        </div>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Prompt details sections">
+        <button class="tab is-on" data-tab="krita">Krita</button>
+        <button class="tab" data-tab="pose">Pose</button>
+        <button class="tab" data-tab="original">Original</button>
+        <button class="tab" data-tab="details">Details</button>
+      </div>
+      <div class="insp-body">
+        <!-- Krita -->
+        <section class="tabpane is-on" data-pane="krita">
+          <div class="style-card">
+            <i class="ph ph-paint-brush-broad"></i>
+            <label class="style-pick"><span class="eyebrow-lite">Krita style</span><select id="kStyle" title="Style used in Krita"></select></label>
+            <span class="canvas-chip" id="kCanvas"></span>
+          </div>
+          <div class="label-row"><span>Prompt</span><button class="icon-btn" data-clean="#kPrompt" aria-label="Clean tags" title="Clean tags"><i class="ph ph-broom"></i></button><button class="icon-btn" data-copy="#kPrompt" aria-label="Copy" title="Copy"><i class="ph ph-copy"></i></button></div>
+          <textarea id="kPrompt" class="ta"></textarea>
+          <details class="disclosure">
+            <summary>Negative prompt <span class="muted">optional, styles bring their own</span></summary>
+            <textarea id="kNeg" class="ta ta-short"></textarea>
+          </details>
+          <ul class="notes" id="kNotes"></ul>
+          <button class="btn btn-primary btn-block" id="kGen" title="Load this prompt and style into Generate"><i class="ph ph-magic-wand"></i>Open in Generate<kbd>G</kbd></button>
+          <div class="grid2">
+            <button class="btn btn-block" id="kQuickRender" title="Generate 1 test image in Spellbook without leaving the Library"><i class="ph ph-sparkle"></i>Quick render</button>
+            <button class="btn btn-block" id="kSend"><i class="ph ph-paper-plane-tilt"></i>Send to Krita<kbd>K</kbd></button>
+          </div>
+        </section>
+        <!-- Pose -->
+        <section class="tabpane" data-pane="pose">
+          <div class="label-row"><span>Pose tags in this prompt</span><button class="icon-btn" data-copy="#pTags" aria-label="Copy" title="Copy"><i class="ph ph-copy"></i></button></div>
+          <textarea id="pTags" class="ta ta-short" placeholder="No pose tags found. Pick a preset below…"></textarea>
+          <div class="pose-actions">
+            <button class="btn" id="pSwap"><i class="ph ph-swap"></i>Swap into Krita prompt</button>
+            <button class="btn" id="pSkel" disabled><i class="ph ph-person-simple"></i>Send skeleton to Krita</button>
+          </div>
+          <div class="label-row"><span>Poses that match this prompt</span><span class="muted" id="pSuggestNote"></span></div>
+          <div class="pack-grid suggest" id="pSuggest"></div>
+          <div class="label-row"><span>All poses</span></div>
+          <div class="pack-browser" id="pPacks"></div>
+        </section>
+        <!-- Original -->
+        <section class="tabpane" data-pane="original">
+          <div class="label-row"><span>Prompt</span><button class="icon-btn" data-copy="#oPrompt" aria-label="Copy" title="Copy"><i class="ph ph-copy"></i></button></div>
+          <textarea id="oPrompt" class="ta" readonly></textarea>
+          <div class="label-row"><span>Negative</span><button class="icon-btn" data-copy="#oNeg" aria-label="Copy" title="Copy"><i class="ph ph-copy"></i></button></div>
+          <textarea id="oNeg" class="ta ta-short" readonly></textarea>
+          <div class="label-row"><span>Tags</span><span class="muted">click one to find every prompt that uses it</span></div>
+          <div class="chips" id="oTags"></div>
+          <div class="label-row"><span>More like this</span><span class="muted">prompts sharing its tags</span></div>
+          <div class="sim-grid" id="oSim"></div>
+          <button class="btn btn-primary btn-block" id="oGen" title="Load the original prompt and its settings into Generate"><i class="ph ph-magic-wand"></i>Open in Generate<kbd>G</kbd></button>
+        </section>
+        <!-- Details -->
+        <section class="tabpane" data-pane="details">
+          <dl class="specs" id="dSpecs"></dl>
+          <div class="label-row"><span>LoRAs</span></div>
+          <ul class="loras" id="dLoras"></ul>
+          <div class="label-row"><span>Collections</span></div>
+          <div class="save-row">
+            <input id="dCol" list="dColList" class="input" placeholder="Collection name, e.g. Pin-ups…" autocomplete="off">
+            <datalist id="dColList"></datalist>
+            <button class="btn btn-primary" id="dSave"><i class="ph ph-bookmark-simple"></i>Save</button>
+          </div>
+          <input id="dNote" class="input" placeholder="Note (optional)…" autocomplete="off">
+          <div class="chips" id="dIn"></div>
+        </section>
+      </div>
+    </aside>
+  </div>
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+    <div class="lb-stage" id="lbStage"><img id="lbImg" alt="" draggable="false"></div>
+    <div class="lb-bar">
+      <span class="lb-meta" id="lbMeta"></span>
+      <div class="lb-zoom" role="group" aria-label="Zoom">
+        <button class="icon-btn" id="lbZoomOut" title="Zoom out  (−)" aria-label="Zoom out"><i class="ph ph-magnifying-glass-minus"></i></button>
+        <button class="lb-zoom-pct" id="lbZoomPct" title="Fit to window  (0) · double-click image for 100%">Fit</button>
+        <button class="icon-btn" id="lbZoomIn" title="Zoom in  (+)" aria-label="Zoom in"><i class="ph ph-magnifying-glass-plus"></i></button>
+        <button class="btn btn-sm" id="lbZoom1" title="Actual pixels  (1)">1:1</button>
+      </div>
+      <button class="icon-btn lb-gen" id="lbStar" title="Star  (F)" aria-label="Star  (F)"><i class="ph ph-star"></i></button>
+      <button class="btn lb-gen" id="lbFix" title="Fix face, hands or body on this image (keeps everything else, saves a new copy)"><i class="ph ph-bandaids"></i>Fix…</button>
+      <button class="btn lb-gen" id="lbUpscale" title="Enlarge and redraw detail, using the Hires fix settings (scale, upscaler, denoise)"><i class="ph ph-arrows-out"></i>Upscale</button>
+      <button class="btn lb-gen" id="lbRemix" title="Use this image as the starting point in Generate"><i class="ph ph-shuffle-angular"></i>Remix</button>
+      <button class="btn lb-gen" id="lbCmp" title="The comparison batch this image came from" hidden><i class="ph ph-squares-four"></i>Comparison</button>
+      <button class="btn lb-gen" id="lbVary" title="4 small variations of this image (same seed, slight changes)"><i class="ph ph-sparkle"></i>Variations</button>
+      <button class="btn lb-gen" id="lbCopy" title="Copy the full prompt that was sent to Forge"><i class="ph ph-copy"></i>Copy prompt</button>
+      <button class="btn lb-gen" id="lbSeed" title="Load this prompt and seed into Generate"><i class="ph ph-arrow-counter-clockwise"></i>Reuse</button>
+      <button class="btn lb-gen" id="lbInterrogate"><i class="ph ph-scan"></i>Interrogate</button>
+      <button class="btn lb-gen" id="lbKritaDoc" title="Open the image in Krita as a new document"><i class="ph ph-file-plus"></i>Open in Krita</button>
+      <button class="btn lb-gen" id="lbKrita" title="Send prompt to Krita and the image as a reference"><i class="ph ph-paper-plane-tilt"></i>To Krita</button>
+      <button class="btn lb-gen" id="lbReveal"><i class="ph ph-folder-open"></i>Show in Finder</button>
+      <button class="icon-btn lb-gen" id="lbDelete" title="Delete" aria-label="Delete"><i class="ph ph-trash"></i></button>
+      <button class="icon-btn" id="lbClose" aria-label="Close  (Esc)" title="Close  (Esc)"><i class="ph ph-x"></i></button>
+    </div>
+    <div class="lb-strip" id="lbStrip" hidden></div>
+    <button class="lb-nav prev" id="lbPrev" title="Previous  (←)"><i class="ph ph-caret-left"></i></button>
+    <button class="lb-nav next" id="lbNext" title="Next  (→)"><i class="ph ph-caret-right"></i></button>
+  </div>
+  <ul class="ac-pop" id="acPop" role="listbox" hidden></ul>
+  <div class="palette pose-modal" id="poseModal" hidden>
+    <div class="palette-box pose-modal-box" role="dialog" aria-modal="true" aria-label="Pose browser">
+      <div class="palette-input"><i class="ph ph-person-simple-run"></i><b>Poses</b><span class="muted" id="poseModalFor"></span><button class="icon-btn" id="poseModalClose" aria-label="Close"><i class="ph ph-x"></i></button></div>
+      <div class="pack-browser big" id="mPacks"></div>
+    </div>
+  </div>
+  <div class="palette" id="help" hidden>
+    <div class="palette-box help-box" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts" tabindex="-1">
+      <div class="palette-input"><i class="ph ph-keyboard"></i><b>Keyboard shortcuts</b><kbd>esc</kbd></div>
+      <div class="help-grid">
+        <section><h4>Everywhere</h4>
+          <p><kbd>⌘K</kbd> Command palette</p><p><kbd>1</kbd>–<kbd>5</kbd> Switch views</p><p><kbd>?</kbd> This list</p><p><kbd>⌘V</kbd> Paste an image to interrogate</p><p><kbd>Esc</kbd> Close panels</p></section>
+        <section><h4>Library</h4>
+          <p><kbd>/</kbd> Search</p><p><kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd> Move selection</p><p><kbd>[</kbd> <kbd>]</kbd> Previous / next page</p>
+          <p><kbd>−</kbd> <kbd>=</kbd> Thumbnail size</p><p><kbd>G</kbd> Open in Generate</p><p><kbd>K</kbd> Send to Krita</p><p><kbd>S</kbd> Save to collection</p><p><kbd>⌘</kbd>/<kbd>⇧</kbd> click Select several</p></section>
+        <section><h4>Generate</h4>
+          <p><kbd>⌘↵</kbd> Generate / add to queue</p><p><kbd>Tab</kbd> Complete a tag</p><p><kbd>⌘↑</kbd> <kbd>⌘↓</kbd> Weight a tag</p><p><kbd>←</kbd> <kbd>→</kbd> Browse in the viewer</p><p><kbd>+</kbd> <kbd>−</kbd> Zoom in the viewer · <kbd>0</kbd> fit · <kbd>1</kbd> 100%</p><p>Pinch / ⌘-scroll zoom · drag or scroll to pan · double-click 100%</p><p><kbd>F</kbd> Star in the viewer</p></section>
+      </div>
+    </div>
+  </div>
+  <div class="multi-bar" id="multiBar" hidden>
+    <span id="multiCount">0 selected</span>
+    <button class="btn btn-sm" id="multiSave"><i class="ph ph-bookmark-simple"></i>Save to collection</button>
+    <button class="btn btn-sm" id="multiQueue"><i class="ph ph-stack"></i>Queue in Generate</button>
+    <button class="btn btn-sm" id="multiClear"><i class="ph ph-x"></i>Clear</button>
+  </div>
+  <div class="compare" id="compare" role="dialog" aria-modal="true" aria-label="Compare images" hidden>
+    <div class="cmp-panes" id="cmpPanes"></div>
+    <button class="icon-btn cmp-close" id="cmpClose" title="Close  (Esc)" aria-label="Close  (Esc)"><i class="ph ph-x"></i></button>
+  </div>
+  <div class="cmp-grid-wrap" id="cmpGrid" role="dialog" aria-modal="true" aria-label="Comparison" hidden>
+    <div class="cmp-grid-head"><div><h2>Comparison</h2><p class="muted" id="cmpGridNote"></p></div>
+      <button class="icon-btn" id="cmpGridClose" aria-label="Close  (Esc)" title="Close  (Esc)"><i class="ph ph-x"></i></button></div>
+    <div class="cmp-grid-scroll"><div class="cmp-grid" id="cmpGridBody"></div></div>
+  </div>
+  <div class="palette" id="palette" hidden>
+    <div class="palette-box" role="dialog" aria-modal="true" aria-label="Command palette">
+      <div class="palette-input"><i class="ph ph-magnifying-glass"></i><input id="palQ" aria-label="Search commands" placeholder="Type a command, theme or character…" autocomplete="off" spellcheck="false"><kbd>esc</kbd></div>
+      <ul class="palette-list" id="palList" role="listbox" aria-label="Commands"></ul>
+      <div class="palette-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>↵</kbd> run</span><span><kbd>⌘K</kbd> toggle</span></div>
+    </div>
+  </div>
+  <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

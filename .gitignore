@@ -1,0 +1,27 @@
+__pycache__/
+.pytest_cache/
+*.pyc
+.beta-data/
+.pose-kit/
+spellbook.json
+standalone/.venv/
+standalone/create/
+standalone/#/
+.DS_Store
+# Internal material & planning files
+BETA_AUDIT.md
+BETA_FIX.md
+BETA_PLAN.md
+BETA_SUMMARY.md
+BRAND.md
+CHARACTER_SHEET_EXAMPLES.json
+CHARACTER_SHEET_FILTER_PLAN.md
+CHARACTER_SHEET_PRESETS.md
+NSFW_CHARACTER_SHEETS.md
+KREA2_MPS_RESEARCH.md
+LESSONS_LEARNED.md
+PRIMARY_HANDOFF.md
+docs/superpowers/
+plans/
+.scratch/
+brand/

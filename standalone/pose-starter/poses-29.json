@@ -1,0 +1,118 @@
+{
+ "flying_punch": {
+  "note": "Superman punch: whole body one long diagonal; near fist slightly foreshortened toward camera.",
+  "tags": "midair, flying, punching, from side, full body, outstretched arm, clenched hand, leaning forward, dynamic pose, foreshortening, motion lines, speed lines, wind"
+ },
+ "rising_kick": {
+  "note": "Torso leans AWAY from the kick to counter-balance; support leg + spine form one C-curve.",
+  "tags": "kicking, high kick, leg up, standing on one leg, fighting stance, clenched hands, dynamic pose, motion lines"
+ },
+ "energy_blast": {
+  "note": "Side-on blast: arms level and nearly flat to camera (heavy foreshortening read as bending over - 2026-10-06). Back leg straight side, front curved.",
+  "tags": "firing energy blast, outstretched arms, arms forward, palms forward, wide stance, from side, full body, dynamic pose, glowing, light rays"
+ },
+ "dash": {
+  "note": "Contralateral: forward arm opposite forward leg. Head-to-back-foot one straight diagonal.",
+  "tags": "running, sprinting, leaning forward, knee up, clenched hands, dynamic pose, speed lines, dust cloud"
+ },
+ "ground_punch": {
+  "note": "Downward smash: whole body drives through the fist into the ground; back arm flung up for counter-balance, compressed triangle.",
+  "tags": "punching the ground, fist on ground, crouching, ground cracking, shockwave, impact, flying rocks, dynamic pose, from side, full body"
+ },
+ "sand_command": {
+  "note": "Stillness against chaos: near-upright calm body, one arm sweeping out to command the effect; the FX carry the motion. Slight lean back, twist 35.",
+  "tags": "standing, outstretched arm, open hand, arms crossed, calm, expressionless, swirling sand, sand wave, wind, floating hair, dynamic pose, from below, full body"
+ },
+ "leap_joy": {
+  "note": "Arched C-curve from raised hands through the back to folded legs.",
+  "tags": "jumping, midair, arms up, legs tucked, open mouth, smile, happy, dynamic pose, from below, wind"
+ },
+ "look_back_guard": {
+  "note": "Back three-quarter: shoulders and hips turned 25 deg apart, face in profile over the shoulder.",
+  "tags": "from behind, looking back, looking over shoulder, fighting stance, clenched hands, dynamic pose"
+ },
+ "spin_slash": {
+  "note": "Follow-through extreme: chest whipped 50 deg past the hips, lead arm extended along the swing arc.",
+  "tags": "swinging, follow-through, motion blur, twisted torso, lunge, cloak, dynamic pose, dutch angle"
+ },
+ "fight_stance": {
+  "note": "Fighting-game idle: 3/4 turned, both fists up at chin height, wide stance, weight slightly back.",
+  "tags": "fighting stance, fists up, guard, ready stance, from side, full body, dynamic pose, wind"
+ },
+ "ninja_run": {
+  "note": "Low horizontal sprint, both arms trailing: one long diagonal from head to back foot.",
+  "tags": "ninja run, running, sprinting, arms behind back, leaning forward, low stance, from side, full body, dynamic pose, speed lines, dust"
+ },
+ "victory_fist": {
+  "note": "Win pose: one fist straight up, slight back-arch, low camera.",
+  "tags": "fist raised, arm up, victory pose, grin, confident, from below, wind, floating hair, dynamic pose, full body"
+ },
+ "pinup_contrapposto": {
+  "note": "Reiq S-curve: hip thrown hard to the weight side, shoulders counter-tilted, hand on hip makes the triangle. Classic pin-up stance.",
+  "tags": "standing, contrapposto, hand on hip, weight on one leg, confident, smirk, looking at viewer, from below, full body, dynamic pose, wind, floating hair"
+ },
+ "glance_back_twist": {
+  "note": "Hips turned away, chest swung back toward camera (80 deg twist via yaw_up/yaw_low), face toward viewer. Reads as a glance, not a rear view.",
+  "tags": "looking back, looking over shoulder, twisted torso, upper body turned to viewer, three-quarter view, from side, full body, dynamic pose, floating hair"
+ },
+ "hair_whip_turn": {
+  "note": "Spin follow-through: shoulders whipped 45 deg past hips, lead arm swinging out, hair/FX trail the arc (Reiq frames action with hair and energy).",
+  "tags": "turning, spinning, hair whip, long hair flowing, motion blur, backhand, fighting stance, dutch angle, full body, dynamic pose, wind"
+ },
+ "flying_kick": {
+  "note": "Side-on jump kick: lead leg fully extended flat to camera, rear leg tucked, torso leaning back.",
+  "tags": "flying kick, jump kick, midair, leg extended, kicking, from side, full body, dynamic pose, speed lines, motion lines"
+ },
+ "landing_adult": {
+  "note": "Adult-proportion superhero landing: rear knee down with shin flat behind, front foot planted, fist on the ground, back arm flung up.",
+  "tags": "superhero landing, three-point landing, kneeling, one knee, fist on ground, looking ahead, from below, dust, impact, full body"
+ },
+ "pinup_side": {
+  "note": "Side view: full profile facing right (arms and legs overlap like a real profile), slight back-arch S.",
+  "tags": "from side, profile, side view, standing, arched back, full body"
+ },
+ "startled_recoil": {
+  "note": "Recoil: torso thrown back away from the scare, both palms up near the face, front knee lifted.",
+  "tags": "surprised, startled, recoiling, leaning back, hands up, open hands, open mouth, wide-eyed, one leg up, full body"
+ },
+ "pinup_back": {
+  "note": "Back view: back to camera, hip thrown to the weight leg, one hand on hip, head turned a little.",
+  "tags": "from behind, back, standing, contrapposto, hand on hip, full body"
+ },
+ "reach_foreshort": {
+  "note": "Reach at camera: near arm foreshortened, chest leaning in, hips back.",
+  "tags": "reaching towards viewer, outstretched hand, foreshortening, leaning forward, from below"
+ },
+ "pinup_hands_behind_head": {
+  "note": "Classic pin-up: elbows out, hands behind head, hip thrown to the weight leg, relaxed knee inward.",
+  "tags": "arms behind head, hands behind head, contrapposto, hip pop, standing, looking at viewer, full body"
+ },
+ "pinup_over_shoulder": {
+  "note": "Back to camera, face turned over the shoulder, hand on hip, one knee bent.",
+  "tags": "from behind, looking back, looking over shoulder, hand on hip, standing, full body"
+ },
+ "pinup_hand_in_hair": {
+  "note": "S-curve: one hand lifting the hair, the other on the hip, head tilted into the raised arm.",
+  "tags": "hand in own hair, hand on hip, contrapposto, s-curve, standing, looking at viewer, full body"
+ },
+ "pinup_kneeling_arch": {
+  "note": "Kneeling front view, shins pointing back (foreshortened), back arched, both hands in the hair.",
+  "tags": "kneeling, arched back, hands in own hair, looking at viewer, full body"
+ },
+ "fashion_sitting_crossed": {
+  "note": "Seated on a stool facing camera, thighs foreshortened toward viewer, one leg crossed over.",
+  "tags": "sitting, crossed legs, on stool, hands on lap, looking at viewer, full body"
+ },
+ "fashion_runway_walk": {
+  "note": "Catwalk step: feet crossing the center line, hips swinging hard, arms loose.",
+  "tags": "walking, runway, catwalk, crossed step, confident, looking at viewer, full body"
+ },
+ "fashion_power_stance": {
+  "note": "Wide stance, both hands on hips, slight low angle: confident fashion/superhero stance.",
+  "tags": "hands on hips, legs apart, power pose, confident, looking at viewer, from below, full body"
+ },
+ "fashion_ankle_cross": {
+  "note": "Standing with ankles crossed, hand on hip, gentle S-curve: catalog/fashion pose.",
+  "tags": "standing, crossed ankles, legs crossed, hand on hip, looking at viewer, full body"
+ }
+}

@@ -1,0 +1,265 @@
+[
+  {
+    "name": "WAI-illustrious",
+    "banned_tags": [
+      "realistic",
+      "photorealistic",
+      "3d",
+      "photo",
+      "photo (medium)",
+      "anime",
+      "anime style",
+      "danbooru"
+    ],
+    "style": "tags",
+    "quality_prefix": "masterpiece, best quality, amazing quality, very aesthetic, absurdres, newest",
+    "negative": "worst quality, bad quality, low quality, lowres, worst detail, sketch, jpeg artifacts, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra digits, watermark, signature, text, artist name, username, censored, blurry, loli, child, aged down",
+    "settings": {
+      "sampler": "Euler a",
+      "scheduler": "Automatic",
+      "steps": 30,
+      "cfg": 7,
+      "clip_skip": 2,
+      "width": 832,
+      "height": 1216
+    },
+    "writer_rules": "Polished anime look. Danbooru tags only. Avoid 'realistic' and '3d' unless the user wants 2.5D."
+  },
+  {
+    "name": "Reedy (Illustrious)",
+    "banned_tags": [
+      "realistic",
+      "photorealistic",
+      "3d",
+      "photo",
+      "photo (medium)",
+      "anime",
+      "anime style",
+      "danbooru"
+    ],
+    "style": "tags",
+    "quality_prefix": "masterpiece, best quality, amazing quality, very aesthetic, absurdres, newest",
+    "negative": "worst quality, bad quality, low quality, lowres, worst detail, sketch, jpeg artifacts, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra digits, watermark, signature, text, artist name, username, censored, blurry, realistic, 3d, loli, child, aged down",
+    "settings": {
+      "sampler": "Euler a",
+      "scheduler": "Automatic",
+      "steps": 28,
+      "cfg": 5.5,
+      "clip_skip": 2,
+      "width": 832,
+      "height": 1216
+    },
+    "writer_rules": "Illustrious merge that can drift semi-real; keep it flat anime. Danbooru tags only."
+  },
+  {
+    "name": "Nova Toon",
+    "banned_tags": [
+      "realistic",
+      "photorealistic",
+      "3d",
+      "photo",
+      "photo (medium)",
+      "anime",
+      "anime style",
+      "danbooru"
+    ],
+    "style": "tags",
+    "quality_prefix": "cartoon, toon \\(style\\), masterpiece, best quality, amazing quality, very aesthetic, absurdres, newest",
+    "negative": "worst quality, bad quality, low quality, lowres, worst detail, sketch, jpeg artifacts, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra digits, watermark, signature, text, artist name, username, censored, blurry, realistic, 3d, photo, loli, child, aged down",
+    "settings": {
+      "sampler": "Euler a",
+      "scheduler": "Automatic",
+      "steps": 25,
+      "cfg": 4.5,
+      "clip_skip": 2,
+      "width": 832,
+      "height": 1216
+    },
+    "writer_rules": "Western cartoon style. Danbooru tags only. Never use 'realistic', '3d' or 'photo'. Bold shapes, exaggerated expressions are fine."
+  },
+  {
+    "name": "Toon Pin-up Sheet",
+    "subject_only": true,
+    "banned_tags": [
+      "realistic",
+      "photorealistic",
+      "3d",
+      "photo",
+      "photo (medium)",
+      "anime",
+      "anime style",
+      "danbooru"
+    ],
+    "style": "tags",
+    "quality_prefix": "<lora:zackary911_v2_IL:0.7> <lora:fsthicc_style_IL:0.5> <lora:CharacterDesignIllustrious_Concept-10V2:0.6>, masterpiece, best quality, western cartoon, toon \\(style\\), thick black outlines, bold lineart, flat colors, cel shading, simple shading, glossy hair highlights, character sheet, reference sheet, multiple views, multiple poses, color palette, white background",
+    "suffix": "half-closed eyes, smug, smirk, eyeshadow, narrow waist, wide hips, thick thighs, curvy, clenched hand, confident pose",
+    "negative": "3d, realistic, photorealistic, anime screencap, soft shading, gradient shading, painterly, blurry, lowres, worst quality, low quality, bad anatomy, bad hands, extra fingers, fused fingers, text, watermark, signature, scenery, loli, child, aged down",
+    "settings": {
+      "checkpoint": "novaCartoonXL_v60",
+      "sampler": "Euler a",
+      "scheduler": "Automatic",
+      "steps": 28,
+      "cfg": 5.5,
+      "clip_skip": 2,
+      "width": 832,
+      "height": 1216
+    },
+    "writer_rules": "Character tags only."
+  },
+  {
+    "name": "Toon Pin-up Dynamic",
+    "subject_only": true,
+    "banned_tags": [
+      "realistic",
+      "photorealistic",
+      "3d",
+      "photo",
+      "photo (medium)",
+      "anime",
+      "anime style",
+      "danbooru"
+    ],
+    "style": "tags",
+    "quality_prefix": "<lora:zackary911_v2_IL:0.7> <lora:fsthicc_style_IL:0.5> <lora:foreshortening_slider_IL:1.2>, masterpiece, best quality, western cartoon, toon \\(style\\), thick black outlines, bold lineart, flat colors, cel shading, simple shading, glossy hair highlights, foreshortening, dynamic angle, perspective, from below, dutch angle, white background, simple background",
+    "suffix": "dynamic pose, reaching towards viewer, outstretched hand, fist in foreground, leaning forward, half-closed eyes, smug, smirk, eyeshadow, narrow waist, wide hips, thick thighs, curvy",
+    "negative": "3d, realistic, photorealistic, anime screencap, soft shading, gradient shading, painterly, blurry, lowres, worst quality, low quality, bad anatomy, bad hands, extra fingers, fused fingers, text, watermark, signature, scenery, loli, child, aged down, character sheet, multiple views, reference sheet, flat perspective, straight-on, symmetrical pose",
+    "settings": {
+      "checkpoint": "novaCartoonXL_v60",
+      "sampler": "Euler a",
+      "scheduler": "Automatic",
+      "steps": 28,
+      "cfg": 5.5,
+      "clip_skip": 2,
+      "width": 832,
+      "height": 1216
+    },
+    "writer_rules": "Character tags only. Single figure, strong foreshortening."
+  },
+  {
+    "name": "Toon Pin-up Dynamic Sheet",
+    "subject_only": true,
+    "banned_tags": [
+      "realistic",
+      "photorealistic",
+      "3d",
+      "photo",
+      "photo (medium)",
+      "anime",
+      "anime style",
+      "danbooru"
+    ],
+    "style": "tags",
+    "quality_prefix": "<lora:zackary911_v2_IL:0.7> <lora:fsthicc_style_IL:0.5> <lora:CharacterDesignIllustrious_Concept-10V2:0.5> <lora:foreshortening_slider_IL:1.0>, masterpiece, best quality, western cartoon, toon \\(style\\), thick black outlines, bold lineart, flat colors, cel shading, simple shading, glossy hair highlights, character sheet, reference sheet, multiple views, multiple poses, dynamic poses, foreshortening, perspective, from below, white background, simple background",
+    "suffix": "reaching towards viewer, outstretched hand, leaning forward, contrapposto, upper body, cowboy shot, full body, half-closed eyes, smug, grin, eyeshadow, narrow waist, wide hips, thick thighs, curvy",
+    "negative": "3d, realistic, photorealistic, anime screencap, soft shading, gradient shading, painterly, blurry, lowres, worst quality, low quality, bad anatomy, bad hands, extra fingers, fused fingers, text, watermark, signature, scenery, loli, child, aged down, flat perspective, straight-on, symmetrical pose, stiff pose, t-pose",
+    "settings": {
+      "checkpoint": "novaCartoonXL_v60",
+      "sampler": "Euler a",
+      "scheduler": "Automatic",
+      "steps": 28,
+      "cfg": 5.5,
+      "clip_skip": 2,
+      "width": 1344,
+      "height": 768
+    },
+    "writer_rules": "Character tags only. Multi-pose sheet with dynamic foreshortened poses."
+  },
+  {
+    "name": "Toon Pin-up Action Sheet",
+    "subject_only": true,
+    "banned_tags": [
+      "realistic",
+      "photorealistic",
+      "3d",
+      "photo",
+      "photo (medium)",
+      "anime",
+      "anime style",
+      "danbooru"
+    ],
+    "style": "tags",
+    "quality_prefix": "<lora:zackary911_v2_IL:0.7> <lora:fsthicc_style_IL:0.5> <lora:CharacterDesignIllustrious_Concept-10V2:0.6> <lora:foreshortening_slider_IL:0.8>, masterpiece, best quality, western cartoon, toon \\(style\\), thick black outlines, bold lineart, flat colors, cel shading, simple shading, glossy hair highlights, character sheet, reference sheet, multiple views, multiple poses, dynamic poses, expression chart, expressions, running, jumping, crouching, from behind, from side, white background, simple background",
+    "suffix": "multiple expressions, smug, grin, surprised, angry, eyeshadow, narrow waist, wide hips, thick thighs, curvy",
+    "negative": "3d, realistic, photorealistic, anime screencap, soft shading, gradient shading, painterly, blurry, lowres, worst quality, low quality, bad anatomy, bad hands, extra fingers, fused fingers, text, watermark, signature, scenery, loli, child, aged down, stiff pose, t-pose, identical poses",
+    "settings": {
+      "checkpoint": "novaCartoonXL_v60",
+      "sampler": "Euler a",
+      "scheduler": "Automatic",
+      "steps": 28,
+      "cfg": 5.5,
+      "clip_skip": 2,
+      "width": 1536,
+      "height": 1024
+    },
+    "writer_rules": "Character tags only. Action poses + expression sheet.",
+    "sheet": {
+      "heads": 6.5,
+      "panel_prefix": "<lora:zackary911_v2_IL:0.7> <lora:fsthicc_style_IL:0.5> <lora:foreshortening_slider_IL:0.8>, masterpiece, best quality, western cartoon, toon \\(style\\), thick black outlines, bold lineart, flat colors, cel shading, simple shading, glossy hair highlights, dynamic pose",
+      "panel_suffix": "narrow waist, wide hips, thick thighs, curvy",
+      "panel_negative_extra": "character sheet, multiple views, reference sheet, multiple girls, 2girls, stiff pose"
+    }
+  },
+  {
+    "name": "Pony",
+    "banned_tags": [
+      "realistic",
+      "photorealistic",
+      "3d",
+      "photo",
+      "photo (medium)",
+      "danbooru"
+    ],
+    "style": "tags",
+    "quality_prefix": "score_9, score_8_up, score_7_up, source_anime",
+    "negative": "score_6, score_5, score_4, worst quality, low quality, text, censored, deformed, bad hand, blurry, watermark, signature, 3d, monochrome, extra hands, extra fingers, bad anatomy, loli, child",
+    "settings": {
+      "sampler": "Euler a",
+      "scheduler": "Automatic",
+      "steps": 25,
+      "cfg": 7,
+      "clip_skip": 2,
+      "width": 832,
+      "height": 1216
+    },
+    "writer_rules": "Pony Diffusion V6. Danbooru tags only. Do not output score_ tags (prefix adds them)."
+  },
+  {
+    "name": "Pony Realism",
+    "banned_tags": [
+      "anime",
+      "anime style",
+      "cartoon",
+      "illustration",
+      "danbooru"
+    ],
+    "style": "tags",
+    "quality_prefix": "score_9, score_8_up, score_7_up, source_real, photo, raw photo",
+    "negative": "score_4, score_5, score_6, source_anime, source_cartoon, source_pony, 3d, render, cgi, painting, illustration, anime, cartoon, airbrushed, plastic skin, doll, deformed hands, extra fingers, fused fingers, missing fingers, bad anatomy, blurry, lowres, jpeg artifacts, watermark, text, signature, child, teen, loli",
+    "settings": {
+      "sampler": "DPM++ 2M SDE",
+      "scheduler": "Karras",
+      "steps": 30,
+      "cfg": 5,
+      "clip_skip": 2,
+      "width": 768,
+      "height": 1344
+    },
+    "writer_rules": "Photoreal. Tags plus short photo phrases (lighting, camera, skin texture). State an adult age like '25 year old woman' for people."
+  },
+  {
+    "name": "Flux",
+    "style": "natural",
+    "quality_prefix": "",
+    "negative": "",
+    "settings": {
+      "sampler": "Euler",
+      "scheduler": "Simple",
+      "steps": 25,
+      "cfg": 1,
+      "distilled_cfg": 3.5,
+      "width": 768,
+      "height": 1344
+    },
+    "writer_rules": "Write 3-6 plain English sentences. No tag lists, no weights, no negative prompt."
+  }
+]

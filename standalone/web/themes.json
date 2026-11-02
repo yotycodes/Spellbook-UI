@@ -1,0 +1,175 @@
+{
+ "default": "graphite",
+ "themes": [
+  {
+   "id": "graphite",
+   "name": "Graphite",
+   "mood": "Neutral gray, brand teal accent. The default.",
+   "colors": {
+    "bg": "#0d0e10",
+    "surface": "#141518",
+    "surface-3": "#212328",
+    "line-2": "#31343a",
+    "text": "#e9eaec",
+    "text-2": "#b4b7bd",
+    "accent": "#00d5d8",
+    "accent-fill": "#0a7f84",
+    "accent-ink": "#ffffff",
+    "accent-soft": "#0e3a3d"
+   }
+  },
+  {
+   "id": "oled",
+   "name": "OLED Black",
+   "mood": "True black, blue accent. Best on OLED screens.",
+   "colors": {
+    "bg": "#000000",
+    "surface": "#0a0a0b",
+    "surface-3": "#18181b",
+    "line-2": "#2a2a2f",
+    "text": "#ececee",
+    "text-2": "#b6b6bc",
+    "accent": "#4d8dff",
+    "accent-fill": "#2d6ae0",
+    "accent-ink": "#ffffff",
+    "accent-soft": "#0f1c33"
+   }
+  },
+  {
+   "id": "midnight-graphite",
+   "name": "Midnight Graphite",
+   "mood": "Sleek, focused. Navy surfaces, ice-blue accent.",
+   "colors": {
+    "bg": "#0B1020",
+    "surface": "#121B31",
+    "surface-3": "#1C2842",
+    "line-2": "#34435E",
+    "text": "#F5F7FF",
+    "text-2": "#BAC5DA",
+    "accent": "#8CB4FF",
+    "accent-fill": "#8CB4FF",
+    "accent-ink": "#08152B",
+    "accent-soft": "#24365B"
+   }
+  },
+  {
+   "id": "warm-paper",
+   "name": "Warm Paper",
+   "mood": "Warm, editorial. Espresso surfaces, tan accent.",
+   "colors": {
+    "bg": "#1A1714",
+    "surface": "#24201B",
+    "surface-3": "#302921",
+    "line-2": "#514538",
+    "text": "#F7EFE4",
+    "text-2": "#D0C0AE",
+    "accent": "#D6B487",
+    "accent-fill": "#D6B487",
+    "accent-ink": "#24170B",
+    "accent-soft": "#423324"
+   }
+  },
+  {
+   "id": "sage-studio",
+   "name": "Sage Studio",
+   "mood": "Calm, grounded. Forest surfaces, sage accent.",
+   "colors": {
+    "bg": "#111A14",
+    "surface": "#19251C",
+    "surface-3": "#233328",
+    "line-2": "#354C3B",
+    "text": "#F1F7F0",
+    "text-2": "#BED0C0",
+    "accent": "#91D4A9",
+    "accent-fill": "#91D4A9",
+    "accent-ink": "#102319",
+    "accent-soft": "#284633"
+   }
+  },
+  {
+   "id": "ocean-glass",
+   "name": "Ocean Glass",
+   "mood": "Clear, cool. Deep-ocean surfaces, aqua accent.",
+   "colors": {
+    "bg": "#0C1A20",
+    "surface": "#13272F",
+    "surface-3": "#1E3740",
+    "line-2": "#35515B",
+    "text": "#F0FAFC",
+    "text-2": "#B7D0D6",
+    "accent": "#76D8E6",
+    "accent-fill": "#76D8E6",
+    "accent-ink": "#092228",
+    "accent-soft": "#204852"
+   }
+  },
+  {
+   "id": "lavender-cloud",
+   "name": "Lavender Cloud",
+   "mood": "Soft, creative. Plum surfaces, lilac accent.",
+   "colors": {
+    "bg": "#171222",
+    "surface": "#211A31",
+    "surface-3": "#2E2543",
+    "line-2": "#453758",
+    "text": "#F8F3FF",
+    "text-2": "#D2C5E7",
+    "accent": "#C4A5FF",
+    "accent-fill": "#C4A5FF",
+    "accent-ink": "#28143D",
+    "accent-soft": "#3D2B57"
+   }
+  },
+  {
+   "id": "cherry-noir",
+   "name": "Cherry Noir",
+   "mood": "Rich, expressive. Burgundy surfaces, rose accent.",
+   "colors": {
+    "bg": "#1E1017",
+    "surface": "#2A1720",
+    "surface-3": "#38202C",
+    "line-2": "#573543",
+    "text": "#FFF1F5",
+    "text-2": "#E1BCC9",
+    "accent": "#FF91B5",
+    "accent-fill": "#FF91B5",
+    "accent-ink": "#3A0B1F",
+    "accent-soft": "#5B223A"
+   }
+  },
+  {
+   "id": "retro-arcade",
+   "name": "Retro Arcade",
+   "mood": "Playful, bold. Midnight purple, electric mint.",
+   "colors": {
+    "bg": "#100D1C",
+    "surface": "#19142B",
+    "surface-3": "#271E41",
+    "line-2": "#42335F",
+    "text": "#F9F5FF",
+    "text-2": "#C9BDED",
+    "accent": "#67F2D0",
+    "accent-fill": "#67F2D0",
+    "accent-ink": "#07251C",
+    "accent-soft": "#30234E"
+   }
+  },
+  {
+   "id": "monochrome",
+   "name": "Monochrome Contrast",
+   "mood": "Black and white, strongest contrast.",
+   "colors": {
+    "bg": "#000000",
+    "surface": "#0F0F0F",
+    "surface-3": "#1C1C1C",
+    "line-2": "#777777",
+    "text": "#FFFFFF",
+    "text-2": "#D6D6D6",
+    "accent": "#FFFFFF",
+    "accent-fill": "#FFFFFF",
+    "accent-ink": "#000000",
+    "accent-soft": "#2A2A2A"
+   }
+  }
+ ]
+}

@@ -1,0 +1,902 @@
+[
+ {
+  "id": -1000,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "golden hour valley landscape, rolling wheat fields, distant river glint, wisps of ground fog, volumetric god rays through broken clouds, warm amber palette, wide aerial shot, soft depth haze",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Scenery / environments"
+  ]
+ },
+ {
+  "id": -1001,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "narrow rain-slicked alley at night, puddle reflections of a single hanging lantern, mossy brick, drifting mist, muted teal and amber palette, cinematic composition, gentle rim light, quiet mood",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Scenery / environments"
+  ]
+ },
+ {
+  "id": -1002,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "sunlit greenhouse interior, glass roof beams casting striped shadows, overgrown ferns and vines, dust motes in light shafts, humid air, soft green and gold palette, tranquil atmosphere",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Scenery / environments"
+  ]
+ },
+ {
+  "id": -1003,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "terraced tea fields after rain, mist threading between rows, a lone picket path, gradient green hills, soft overcast wash, fine agricultural detail, restful scale",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Scenery / environments"
+  ]
+ },
+ {
+  "id": -1004,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "dawn fog rolling over a birch forest, pale trunks fading into white gradients, a single crow silhouette crossing, cold green and silver palette, wide quiet frame, painterly detail",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Scenery / environments"
+  ]
+ },
+ {
+  "id": -1005,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "cliffside observatory at dusk, rotunda dome open to the stars, long grass crowding the pathway, deep blue sky greening at the horizon, warm lamp glow through the slit, reflective stillness",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Scenery / environments"
+  ]
+ },
+ {
+  "id": -1006,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "night market street after the stalls close, strings of unlit bulbs swaying, paper lanterns stacked and waiting, wet cobbles reflecting one neon sign, violet and amber palette",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Scenery / environments"
+  ]
+ },
+ {
+  "id": -1007,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "underwater kelp forest in clear morning water, sunbeams knifing through the green canopy, a school of silver fish parting around a rock spire, crisp cyan gradients, calm scale",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Scenery / environments"
+  ]
+ },
+ {
+  "id": -1008,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "a red fox curled asleep in autumn leaves, morning frost on the fur tips, shallow depth of field, soft backlight haloing the fur, warm greens and rust tones, quiet wildlife mood",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Animals / creatures"
+  ]
+ },
+ {
+  "id": -1009,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "no humans, close-up, barn owl mid-glance on a moonlit stone arch, faint blue mist, feather detail, rim light from a cold moon, dark background, naturalistic painting style",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Animals / creatures"
+  ]
+ },
+ {
+  "id": -1010,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "whale gliding beneath crystal ice seen from above, sunbeams piercing frozen crevasses, deep blues with silver light, serene scale, crisp water clarity, wide cinematic frame",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Animals / creatures"
+  ]
+ },
+ {
+  "id": -1011,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "a great grey owl gliding low over a snowy meadow at dusk, wings wide and locked, faint pink light on the furrows below, backlit powder snow, feather detail, naturalistic painting",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Animals / creatures"
+  ]
+ },
+ {
+  "id": -1012,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "jellyfish drifting in deep dark water, translucent bells glowing soft violet, trailing tendrils like slowly falling silk, bioluminescent rim light, black background, meditative frame",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Animals / creatures"
+  ]
+ },
+ {
+  "id": -1013,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "mountain goat kid balancing on a rock spine between two peaks, clouds drifting below, golden evening light rimming the fur, sharp scale contrast, wildlife-photograph mood",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Animals / creatures"
+  ]
+ },
+ {
+  "id": -1014,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "portrait of an elderly fisherman, deep smile lines, salt-and-pepper beard, weathered oilskin, overcast harbor light, muted blues and grays, 85mm look, natural skin texture, gentle gaze",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Portrait / close-up"
+  ]
+ },
+ {
+  "id": -1015,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "close-up profile of a dancer, hair pinned with a silver pin, warm stage light from the side, dark velvet backdrop, film-grain softness, calm focused expression",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Portrait / close-up"
+  ]
+ },
+ {
+  "id": -1016,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "painter at the easel holding a brush, palette ringed with mixed dabs, smock flecked with color, north-window light, gentle concentration, warm studio tones, loose impressionist edges",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Portrait / close-up"
+  ]
+ },
+ {
+  "id": -1017,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "portrait of a violinist resting her chin near the scroll, rosin dust drifting in a window beam, varnish catching amber light, calm after playing, shallow depth of field, honest expression",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Portrait / close-up"
+  ]
+ },
+ {
+  "id": -1018,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "close-up of a potter's hands shaping wet clay on a wheel, clay slip lines on the skin, warm workshop light, earthen tones, texture-forward detail, quiet focus",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Portrait / close-up"
+  ]
+ },
+ {
+  "id": -1019,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "portrait of a market florist wrapped in a canvas apron, buckets of ranunculus behind her, cool overcast storefront light, green and pink accents, gentle tired smile, film grain",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Portrait / close-up"
+  ]
+ },
+ {
+  "id": -1020,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "swordfighter mid-lunge through falling blossoms, cloth trailing, dust at the heel, dynamic diagonal composition, motion blur on the blade edge, backlight pinks and steely grays",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Action / dynamic"
+  ]
+ },
+ {
+  "id": -1021,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "archer releasing an arrow downrange, string shock, frost breath in cold morning air, low angle from behind, pine forest depth, crisp sunrise slant, ochre and spruce-green palette",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Action / dynamic"
+  ]
+ },
+ {
+  "id": -1022,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "storm runner leaping between rooftops in rain sheets, neon reflections on wet tiles, dynamic foreshortened pose from below, wind-blown coat, electric blue and magenta accents",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Action / dynamic"
+  ]
+ },
+ {
+  "id": -1023,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "fencer lunging on a sunlit piste, blade extension locked in line, white jacket creased at the waist, dust popping off the floor at the back foot, high-contrast, speed-line clarity",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Action / dynamic"
+  ]
+ },
+ {
+  "id": -1024,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "kayaker punching through a standing wave mid-rapid, paddle arc cutting spray, PFD straps snapping, gorge walls blurring past, cold green water, dynamic quarter view",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Action / dynamic"
+  ]
+ },
+ {
+  "id": -1025,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "wingsuit pilot arcing past a cliff face at dawn, pink alpenglow on granite, wake of wind-streamed vapor, ebullient speed, extreme foreshortening, crisp alpine air",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Action / dynamic"
+  ]
+ },
+ {
+  "id": -1026,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "forest witch brewing at a stone hearth under hanging herbs, ember light on her hands, botanical detail, warm firelight against cool moss greens, rabbit familiar peeking over the cauldron rim",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Fantasy / magic"
+  ]
+ },
+ {
+  "id": -1027,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "knight kneeling in a sunbeam inside an overgrown cathedral ruin, vines over broken pillars, floating dust, dented armor catching light, reverent mood, painterly golds and weathered gray",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Fantasy / magic"
+  ]
+ },
+ {
+  "id": -1028,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "arcane library floating in void, spiral staircases of glowing glyphs, open books drifting like moths, indigo and gold palette, candle sparks, immense quiet scale",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Fantasy / magic"
+  ]
+ },
+ {
+  "id": -1029,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "desert astronomer reading star charts by a low fire, layered indigo robes, dunes breathing with wind behind, constellations sharp overhead, ember and starlight palette, quiet wonder",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Fantasy / magic"
+  ]
+ },
+ {
+  "id": -1030,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "salt-encrusted sea captain receiving a figurehead's blessing, barnacled armor over oilskin, gull feather braided in the hair, storm-bruise sky, painterly golds and slate, weathered dignity",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Fantasy / magic"
+  ]
+ },
+ {
+  "id": -1031,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "mushroom hollow lit by drifting spores, a badger knight dozing against a lantern-cap fungus, moss-seat furniture, kettle steaming over a pebble fire, cozy low fantasy, greens and cream",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Fantasy / magic"
+  ]
+ },
+ {
+  "id": -1032,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "android barista carefully polishing a ceramic cup, warm morning café light, condensation beads on the counter glass, soft brushed-metal texture, quiet domestic future mood",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Sci-fi / cyberpunk"
+  ]
+ },
+ {
+  "id": -1033,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "derelict space station greenhouse, nutrient mist drifting over tomato vines, a lone trowel floating in microgravity, pale LEDs, cobalt shadows with plant-glow greens, hopeful decay",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Sci-fi / cyberpunk"
+  ]
+ },
+ {
+  "id": -1034,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "solar-sail freighter drifting past a ringed giant, sails yawed to catch the light, hull patched with mismatched plates, dust-scuffed viewport, rings in sharp phase light, lonely scale",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Sci-fi / cyberpunk"
+  ]
+ },
+ {
+  "id": -1035,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "rooftop shrine of antennae and solar panels where a courier rests her hoverboard, laundry lines and drone paths overhead, evening haze, lived-in future, teal and coral palette",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Sci-fi / cyberpunk"
+  ]
+ },
+ {
+  "id": -1036,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "lighthouse keeper's lamp against a black storm wave, rain lashing the rail, iron catwalks, single warm beam carving through spray, cold slate blues, isolation mood",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Dark / gothic"
+  ]
+ },
+ {
+  "id": -1037,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "abandoned carousel overgrown with ivy, peeling horses under cracked moonlight, drifting petals, ghostly soft focus edges, desaturated silver palette with one maroon accent, eerie stillness",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Dark / gothic"
+  ]
+ },
+ {
+  "id": -1038,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "covered bridge at midnight, lantern light pooling under the plank roof, snow filling the wheel ruts, woods pressing close on both sides, blue-black palette, one warm holdout lamp",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Dark / gothic"
+  ]
+ },
+ {
+  "id": -1039,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "cathedral crypt repurposed as a seed vault, glass jars of sprouts glowing on stone shelves, votive candles guttering in the draft, ancient vaulting overhead, greens against grey stone",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Dark / gothic"
+  ]
+ },
+ {
+  "id": -1040,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "ferris wheel silhouette in sea fog, salt rust streaking the gondolas, one gondola swinging in a slow wind, gulls roosting on the top bar, monochrome silver with a red accent, quiet dread",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Dark / gothic"
+  ]
+ },
+ {
+  "id": -1041,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "full-length couture look, tailored amber overcoat, wide scarf catching the wind, slate-stone city backdrop, editorial studio light, crisp fabric folds, elegant calm pose",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Fashion / style"
+  ]
+ },
+ {
+  "id": -1042,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "travel outfit in a train compartment window light, khaki field jacket, maps and a thermos, warm afternoon slant, soft film palette, candid lean against the frame",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Fashion / style"
+  ]
+ },
+ {
+  "id": -1043,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "black-tie elegance on a museum stairway, satin column gown and opera gloves, coat draped over the banister, warm gallery light spilling down the marble, editorial pose, jewel tones",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Fashion / style"
+  ]
+ },
+ {
+  "id": -1044,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "workwear lookbook shot, canvas chore jacket patched at the elbow, carpenter boots on a sawdust floor, barn light through window slats, honest texture, ochre and denim palette",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Fashion / style"
+  ]
+ },
+ {
+  "id": -1045,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "chibi dragon librarian napping on a heap of leather books, tiny muzzle steam, reading glasses slipped sideways, candle glow, plush-scale proportions, soft pastel palette",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Cute / chibi"
+  ]
+ },
+ {
+  "id": -1046,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "chibi witch apprentice riding a paper airplane through clouds of chalk dust, oversized hat slipping, ink bottles orbiting, teal and cream palette, sticker-clean edges",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Cute / chibi"
+  ]
+ },
+ {
+  "id": -1047,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "tiny robot gardener watering one sunflower taller than itself, watering can nearly its own size, fuzzy bees orbiting, morning park light, pastel greens, rounded shapes",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Cute / chibi"
+  ]
+ },
+ {
+  "id": -1048,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "monochrome ink wash illustration of a heron standing in a reed marsh, broad brush mist, a single vermilion seal mark, generous negative space, sumi-e discipline",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Anime / illustration"
+  ]
+ },
+ {
+  "id": -1049,
+  "source": "spellbook",
+  "base": "Illustrious",
+  "nsfw": "None",
+  "prompt": "retro anime illustration, girl leaning out of a night train window, city lights ribboning past as streaks, warm interior lamp glow, 90s cel shading, film grain, nostalgic air",
+  "neg": "blurry, lowres, worst quality, low quality, jpeg artifacts, watermark, signature, text, bad anatomy, bad hands, extra digits, fewer digits, cropped",
+  "sampler": "DPM++ 2M Karras",
+  "steps": 30,
+  "cfg": 5,
+  "size": "832x1216",
+  "clip": 2,
+  "res": [],
+  "react": 0,
+  "themes": [
+   "Anime / illustration"
+  ]
+ }
+]
