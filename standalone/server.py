@@ -461,6 +461,45 @@ def library_export():
                         headers={"Cache-Control": "no-store"})
 
 
+@app.post("/api/library/reset")
+def library_reset(confirm: str = Body("", embed=True), clear_favorites: bool = Body(True, embed=True)):
+    """Empty the prompt library: move all-prompts.json (and favorites.json) into a timestamped backup
+    under the app data folder, then start fresh — no restart needed. Requires confirm == "RESET"."""
+    if confirm != "RESET":
+        raise HTTPException(400, 'Type "RESET" to confirm: this empties the prompt library (a backup is saved first).')
+    import shutil
+    from datetime import datetime
+    folder = os.path.abspath(os.path.expanduser(S["library_path"]))
+    backup_dir = os.path.join(APP_DIR, "library-backups",
+                              "reset-" + datetime.now().strftime("%Y%m%d-%H%M%S"))
+    cleared = 0
+    moved = []
+    os.makedirs(backup_dir, exist_ok=True)
+    sidecar = os.path.join(folder, "all-prompts.json")
+    if os.path.exists(sidecar):
+        try:
+            with open(sidecar, encoding="utf-8") as f:
+                cleared = len(json.load(f))
+        except (OSError, ValueError):
+            cleared = 0
+        os.replace(sidecar, os.path.join(backup_dir, "all-prompts.json"))
+        moved.append("all-prompts.json")
+    favorites_removed = 0
+    favorites_cleared = False
+    if clear_favorites:
+        fav_path = os.path.join(APP_DIR, "favorites.json")
+        if os.path.exists(fav_path):
+            shutil.copyfile(fav_path, os.path.join(backup_dir, "favorites.json"))
+        favorites_removed = FAV.clear()
+        favorites_cleared = True
+        # Thumbnail caches are keyed by prompt id; id collisions after a re-import make stale files junk.
+        for cache in (THUMBS, LARGE):
+            shutil.rmtree(cache.folder, ignore_errors=True)
+    _refresh_library()
+    return {"ok": True, "cleared": cleared, "backups_moved": moved, "backup_dir": backup_dir,
+            "favorites_cleared": favorites_cleared, "favorites_removed": favorites_removed}
+
+
 @app.get("/api/large/{rid}")
 def large(rid: int):
     p = LARGE.path(rid) or THUMBS.path(rid)

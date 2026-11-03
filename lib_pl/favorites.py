@@ -55,5 +55,16 @@ class Favorites:
     def note(self, rid):
         return self.data["notes"].get(str(rid), "")
 
+    def clear(self):
+        """Wipe collections + notes back to a fresh state. Returns the number of ids that were collected."""
+        with self._lock:
+            ids = set()
+            for lst in self.data["collections"].values():
+                ids.update(lst)
+            ids.update(int(k) for k in self.data["notes"] if str(k).lstrip("-").isdigit())
+            self.data = {"collections": {self.DEFAULT: []}, "notes": {}}
+            self._save()
+            return len(ids)
+
     def where(self, rid):
         return [n for n, l in self.data["collections"].items() if rid in l]

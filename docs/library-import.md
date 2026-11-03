@@ -70,6 +70,16 @@ If you already maintain a library folder elsewhere,
 **Settings → Library → Export** (or the Export action in the Library) writes
 `spellbook-library.json` — the same sidecar format, ready to share or back up.
 
+## Reset
+
+**Settings → Prompt library → Reset…** empties the library: the sidecar is
+moved into a timestamped backup under the app data folder
+(`library-backups/reset-…/`), favorites and collections are cleared (a copy of
+`favorites.json` goes into the same backup), and thumbnail caches are wiped.
+After a reset the app is back to a fresh-install state: no prompts, and the
+Library view shows the import doors again. Re-import anything anytime from
+your generations, a sidecar, or the starter shelf.
+
 ## Notes on Civitai
 
 Record *cards* from Civitai download their thumbnails from `civitai.com`
