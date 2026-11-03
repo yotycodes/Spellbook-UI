@@ -227,6 +227,65 @@ def style_names():
     return [s["name"] for s in gen.styles()]
 
 
+# ------------------------------------------------------------------ styles API: the manager UI's backend
+def _styles_payload():
+    import gen
+    rows = [dict(s, editable=s["origin"] == "spellbook") for s in gen.styles()]
+    return {"styles": rows, "dir": STYLES_DIR,
+            "krita_dir": KRITA_STYLES_DIR if any(r["origin"] == "krita" for r in rows) else ""}
+
+
+@app.get("/api/styles")
+def styles_list():
+    """Full style detail for the manager: rows from load() + editable flag + folder(s)."""
+    return _styles_payload()
+
+
+def _style_write(filename, body):
+    """Create (filename=None) or update; validate first, guard names, write and report."""
+    import gen
+    try:
+        st = _kstyles.validate(body)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    taken = {s["name"]: s for s in gen.styles() if s["origin"] == "spellbook"}
+    old = taken.get(st["name"])
+    if old and old["file"] != (filename or ""):
+        raise HTTPException(409, f"A style named \u201c{st['name']}\u201d already exists. Rename one of them.")
+    try:
+        fn = _kstyles.update(filename, st) if filename else _kstyles.save(st)
+    except FileNotFoundError:
+        raise HTTPException(404, "That style file is gone — reload and try again.")
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    return {"ok": True, "file": fn, "name": st["name"], **_styles_payload()}
+
+
+@app.post("/api/styles")
+def style_create(st: dict = Body(...)):
+    return _style_write(None, st)
+
+
+@app.post("/api/styles/{filename}")
+def style_save(filename: str, st: dict = Body(...)):
+    return _style_write(filename, st)
+
+
+@app.delete("/api/styles/{filename}")
+def style_delete(filename: str):
+    import gen
+    row = next((s for s in gen.styles() if s["file"] == filename), None)
+    if row and row["origin"] != "spellbook":
+        raise HTTPException(400, "That style lives in Krita's folder and is read-only — copy it here first.")
+    try:
+        _kstyles.delete_file(filename)
+    except FileNotFoundError:
+        raise HTTPException(404, "That style file is gone — reload and try again.")
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    return {**_styles_payload(), "ok": True}
+
+
 _HEROES = {}
 
 

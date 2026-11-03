@@ -2,6 +2,7 @@
 translated to Forge's names."""
 import json
 import os
+import re
 
 from .tagclean import clean
 
@@ -74,6 +75,9 @@ def _read(folder, presets, origin):
         except (OSError, ValueError):
             continue
         sampler, scheduler = presets.get(d.get("sampler", ""), FALLBACK_PRESETS["Default - DPM++ 2M"])
+        # exact round-trip: files edited by Spellbook pin the ComfyUI sampler/scheduler ids directly
+        if d.get("spellbook_sampler"):
+            sampler, scheduler = d["spellbook_sampler"], d.get("spellbook_scheduler") or scheduler
         ck = (d.get("checkpoints") or [""])[0]
         out.append({
             "name": d.get("name") or fn[:-5], "file": fn, "checkpoint": os.path.basename(ck), "arch": d.get("architecture", ""),
@@ -97,3 +101,115 @@ def apply(style, prompt, negative=""):
     final, _ = clean(", ".join(x for x in [body] + loras if x), framing=False)
     neg, _ = clean(", ".join(x for x in (style.get("negative", ""), negative.strip()) if x), positive=False, framing=False)
     return final, neg
+
+
+# ------------------------------------------------------------------ write side (styles created/edited in Spellbook)
+
+_FORGE_LABEL = {v: k for k, v in SAMPLERS.items()}          # "Euler a" -> euler_ancestral
+_SCHED_ID = {v: k for k, v in SCHEDULERS.items()}           # "Karras" -> karras
+
+
+def _preset_display(comfy_sampler, comfy_scheduler, presets_path=SAMPLER_PRESETS):
+    """Krita sampler-preset display name whose ids match — for on-disk compat with Krita. Best effort."""
+    rev = {(v[0], v[1]): k for k, v in _presets(presets_path).items()}
+    return rev.get((comfy_sampler, comfy_scheduler)) or "Default - DPM++ 2M"
+
+
+def _slug(name):
+    return re.sub(r"[^a-z0-9]+", "-", name.strip().lower()).strip("-") or "style"
+
+
+def validate(d):
+    """Normalize a style form payload to the row shape load() produces. Raises ValueError for bad input."""
+    name = str(d.get("name") or "").strip()[:80]
+    if not name:
+        raise ValueError("Style needs a name.")
+    sp = str(d.get("style_prompt") or "").strip()
+    if "{prompt}" not in sp:
+        sp = (sp.rstrip(", ") + ", {prompt}") if sp else "{prompt}"
+    if d.get("sampler") not in SAMPLERS.values():
+        raise ValueError(f"Unknown sampler: {d.get('sampler')}")
+    scheduler = d.get("scheduler") or "Normal"
+    if scheduler not in SCHEDULERS.values():
+        raise ValueError(f"Unknown scheduler: {scheduler}")
+    ck = os.path.basename(str(d.get("checkpoint") or "").strip())
+    loras = []
+    for l in (d.get("loras") or []):
+        if not isinstance(l, dict) or not (str(l.get("name") or "").strip()):
+            continue
+        stem = os.path.splitext(os.path.basename(str(l["name"]).strip()))[0]
+        try:
+            w = max(0.0, min(2.0, float(l.get("strength", 1.0))))
+        except (TypeError, ValueError):
+            w = 1.0
+        loras.append((stem, round(w, 2)))
+    try:
+        steps = max(4, min(150, int(d.get("steps") or 25)))
+        cfg = max(1.0, min(20.0, float(d.get("cfg") or 6)))
+        clip = max(0, min(5, int(d.get("clip_skip") or 0)))
+    except (TypeError, ValueError):
+        raise ValueError("Steps, CFG and clip skip must be numbers.")
+    return {"name": name, "checkpoint": ck, "loras": loras, "style_prompt": sp,
+            "negative": str(d.get("negative") or "").strip(), "sampler": d["sampler"],
+            "scheduler": scheduler, "steps": steps, "cfg": round(cfg, 2), "clip_skip": clip}
+
+
+def save(style, folder=None, presets_path=SAMPLER_PRESETS):
+    """Write an editable style as Krita AI Diffusion JSON v2 (vendor keys carry the exact sampler ids).
+    Returns the filename used. A file whose JSON name matches this style is overwritten; otherwise a
+    free slot `-2`, `-3`, … is picked so no foreign style is clobbered."""
+    folder = folder or STYLES_DIR
+    os.makedirs(folder, exist_ok=True)
+    for candidate in os.listdir(folder) if os.path.isdir(folder) else []:
+        if candidate.endswith(".json"):
+            try:
+                with open(os.path.join(folder, candidate)) as f:
+                    existing = json.load(f)
+                if existing.get("name") == style["name"]:
+                    fn = candidate
+                    break
+            except (OSError, ValueError):
+                pass
+    else:
+        base, fn, i = _slug(style["name"]), None, 1
+        while True:
+            fn = f"{base}.json" if i == 1 else f"{base}-{i}.json"
+            if not os.path.exists(os.path.join(folder, fn)):
+                break
+            i += 1
+    doc = {
+        "version": 2, "vae": "Checkpoint Default", "name": style["name"], "architecture": "illu",
+        "checkpoints": [style["checkpoint"] or ""],
+        "loras": [{"name": f"{n}.safetensors", "strength": w, "enabled": True} for n, w in style["loras"]],
+        "style_prompt": style["style_prompt"], "negative_prompt": style["negative"],
+        "clip_skip": style["clip_skip"], "sampler_steps": style["steps"], "cfg_scale": style["cfg"],
+        "sampler": _preset_display(_FORGE_LABEL[style["sampler"]], _SCHED_ID[style["scheduler"]], presets_path),
+        "spellbook_sampler": _FORGE_LABEL[style["sampler"]], "spellbook_scheduler": _SCHED_ID[style["scheduler"]],
+    }
+    tmp = os.path.join(folder, fn + ".tmp")
+    with open(tmp, "w") as f:
+        json.dump(doc, f, indent=2, ensure_ascii=False)
+    os.replace(tmp, os.path.join(folder, fn))
+    return fn
+
+
+def update(fn, style, folder=None, presets_path=SAMPLER_PRESETS):
+    """Overwrite the file of an existing style (rename-aware: a changed name moves the JSON).
+    Returns the filename the style ended up in."""
+    folder = folder or STYLES_DIR
+    ok = os.path.basename(fn) == fn and fn.endswith(".json")
+    p = os.path.join(folder, fn or "")
+    if not ok or not os.path.isfile(p):
+        raise FileNotFoundError(f"No style file: {fn}")
+    os.remove(p)  # remove first so a rename frees the old slot before the new one is claimed
+    return save(style, folder, presets_path)
+
+
+def delete_file(fn, folder=None):
+    folder = folder or STYLES_DIR
+    if os.path.basename(fn) != fn or not fn.endswith(".json"):
+        raise ValueError("Bad style filename.")
+    p = os.path.join(folder, fn)
+    if not os.path.isfile(p):
+        raise FileNotFoundError(f"No style file: {fn}")
+    os.remove(p)
