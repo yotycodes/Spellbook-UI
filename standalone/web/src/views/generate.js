@@ -9,6 +9,7 @@ import { packBrowser, poseClass, modalBrowser } from "../components/pose-browser
 import { openLightbox, renderLbStrip, askFixes, queueFixes, galLabel } from "../components/lightbox.js";
 import { fillSelect } from "./library.js";
 import { pickImage } from "./interrogate.js";
+import { openStyles } from "../components/styles-manager.js";
 
 export function switchGenSubTab(name) {
   gen.activeSubTab = name;
@@ -209,6 +210,10 @@ $("#gStyleRevert")?.addEventListener("click", (e) => {
 ["#gModel", "#gSampler", "#gScheduler", "#gSteps", "#gStepsN", "#gCfg", "#gCfgN"].forEach((sel) => $(sel)?.addEventListener("change", checkStyleOverride));
 ["#gSteps", "#gCfg"].forEach((sel) => $(sel)?.addEventListener("input", checkStyleOverride));
 $("#gStyle")?.addEventListener("change", (e) => { setStyle(e.target.value); if (e.target.value) toast(`Style: ${esc(e.target.value)}`, "info"); });
+$("#gStyleManage")?.addEventListener("click", () => openStyles({
+  onChanged: () => { if (gen.opts?.online) loadGenOptions(); },
+  onPickStyle: async (name) => { if (!gen.opts?.styles?.length) await loadGenOptions(); setStyle(name, true); if (name) toast(`Style: ${esc(name)}`, "info"); },
+}));
 
 $("#gModel")?.addEventListener("change", async (e) => {
   if ($("#gStyle").value) return;
