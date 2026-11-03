@@ -153,9 +153,12 @@ Nothing leaves your machine, and no personal state lives inside the repo:
   legacy `.beta-data/` folder keeps using it.
 - **Your library** (imported prompts): `~/Documents/Spellbook UI/Library/`
   by default, chosen in first-run Settings.
+- **Your styles** (generation styles): `~/Documents/Spellbook UI/Styles/`
+  by default — plain JSON, editable in-app. Styles you already keep in Krita
+  are still read as a fallback source.
 - **Moved things**: everything is movable — `spellbook.json` next to the app
   (created with nulls on first run) and environment-variable overrides move
-  app data, Forge location, pose kit and Krita styles without touching source.
+  app data, Forge location, pose kit and styles folders without touching source.
 
 ## Releases & Changelog
 
