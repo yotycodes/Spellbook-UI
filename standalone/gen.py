@@ -24,9 +24,10 @@ _styles = {"list": [], "mtime": None}
 def styles():
     """Styles, reloaded when either styles folder changes (Spellbook's own plus the Krita fallback)."""
     from lib_pl import kstyles
-    dirs = [kstyles.STYLES_DIR, kstyles.FALLBACK_DIR]
     stamps = []
-    for d in dirs:
+    for d in (kstyles.STYLES_DIR, kstyles.FALLBACK_DIR):
+        if not d:  # runtime OFF = no fallback source
+            continue
         try:
             stamps.append((d, os.path.getmtime(d)))
         except OSError:

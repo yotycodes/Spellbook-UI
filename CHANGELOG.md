@@ -4,6 +4,15 @@ All notable changes to Spellbook UI are documented here.
 
 ## Unreleased
 
+### Added
+
+- **Styles manager.** Generate → Style gains a + button opening Your Styles:
+  list, create, edit, duplicate and delete styles in-app (JSON files in your
+  styles folder, Krita-read-compatible format; the exact sampler is pinned via
+  vendor keys). Krita-origin styles show read-only and get an "Adopt" copy
+  action; brand-new styles hand straight to the Generate panel. Backed by
+  `GET/POST/DELETE /api/styles` with server-side validation and clamps.
+
 ### Changed
 
 - **Your styles, owned by Spellbook.** Styles now read from Spellbook's own
