@@ -66,6 +66,7 @@ DEFAULTS = {
     "ollama_url": "http://127.0.0.1:11434",
     "ollama_model": "qwen2.5vl:7b",
     "claude_model": "claude-sonnet-5-5",
+    "dock_icon": "dark",  # one of: dark | light | accent | mono
 }
 os.makedirs(APP_DIR, exist_ok=True)
 
@@ -121,6 +122,8 @@ def _get_poses():
 _state = {"lib": None, "tagger": None}
 _lock = threading.Lock()
 _pool = ThreadPoolExecutor(8)
+# Set to True when launched with --window or --native-window so the frontend knows it's in the native app.
+_NATIVE_WINDOW = False
 
 
 def library():
@@ -313,7 +316,7 @@ def character(name: str, rating: str = "SFW"):
 
 @app.get("/api/health")
 def health():
-    return {"ok": True, "app": "spellbook", "version": "0.3.26"}
+    return {"ok": True, "app": "spellbook", "version": "0.3.26", "native": _NATIVE_WINDOW}
 
 
 @app.get("/api/meta")
@@ -1464,7 +1467,8 @@ def settings_get():
                        "key_hint": (key[:7] + "…" + key[-4:]) if len(key) > 16 else ""},
         },
         "interrogate": {"general_threshold": S["general_threshold"], "character_threshold": S["character_threshold"]},
-        "app": {"version": _version(), "data_dir": APP_DIR},
+        "app": {"version": _version(), "data_dir": APP_DIR, "native": _NATIVE_WINDOW},
+        "appearance": {"dock_icon": S.get("dock_icon", "dark")},
     }
 
 
@@ -1500,7 +1504,7 @@ def _move_outputs(old, new):
 def settings_save(changes: dict = Body(...), move_outputs: bool = Body(False)):
     """Save settings and apply them right away (no restart). Folder values are checked before anything is saved."""
     ok_keys = {"gen_dir", "export_dir", "library_path", "lora_dir", "forge_dir", "forge_url", "ollama_url", "ollama_model",
-               "claude_model", "general_threshold", "character_threshold"}
+               "claude_model", "general_threshold", "character_threshold", "dock_icon"}
     bad = sorted(set(changes) - ok_keys)
     if bad:
         raise HTTPException(400, f"Unknown setting: {', '.join(bad)}")
@@ -1521,6 +1525,11 @@ def settings_save(changes: dict = Body(...), move_outputs: bool = Body(False)):
             clean_[k] = p
         elif k.endswith("threshold"):
             clean_[k] = max(0.05, min(0.95, float(v)))
+        elif k == "dock_icon":
+            v = str(v).strip().lower()
+            if v not in ("dark", "light", "accent", "mono"):
+                raise HTTPException(400, f"dock_icon must be one of: dark, light, accent, mono")
+            clean_[k] = v
         else:
             clean_[k] = str(v).strip()
     moved = 0
@@ -1542,6 +1551,8 @@ def settings_save(changes: dict = Body(...), move_outputs: bool = Body(False)):
     _save_settings(clean_)
     if "library_path" in clean_:
         _state["lib"] = None   # reloads from the new folder on next use
+    if "dock_icon" in clean_:
+        _apply_dock_icon(clean_["dock_icon"])
     return {"ok": True, "moved": moved, "settings": settings_get()}
 
 
@@ -1691,11 +1702,51 @@ def _mac_branding():
         info = NSBundle.mainBundle().localizedInfoDictionary() or NSBundle.mainBundle().infoDictionary()
         if info is not None:
             info["CFBundleName"] = "Spellbook UI"
-        icon = os.path.join(HERE, "icon.png")
-        if os.path.exists(icon):
-            NSApplication.sharedApplication().setApplicationIconImage_(NSImage.alloc().initByReferencingFile_(icon))
+        _apply_dock_icon(S.get("dock_icon", "dark"))
     except Exception:
         pass
+
+
+def _apply_dock_icon(variant: str) -> bool:
+    """Switch the macOS dock icon to the given variant (dark/light/accent/mono).
+    AppKit is not thread-safe: setApplicationIconImage_ must run on the main thread.
+    When called from a background thread (e.g. a FastAPI handler) we dispatch via
+    dispatch_async(dispatch_get_main_queue(), ...) using ctypes.
+    Returns True if dispatched/applied successfully, False otherwise."""
+    try:
+        from AppKit import NSApplication, NSImage
+        from Foundation import NSThread
+        name = f"icon-{variant}.png" if variant != "dark" else "icon.png"
+        path = os.path.join(HERE, name)
+        if not os.path.exists(path):
+            path = os.path.join(HERE, "icon.png")
+        if not os.path.exists(path):
+            return False
+
+        def _set_icon():
+            try:
+                img = NSImage.alloc().initByReferencingFile_(path)
+                NSApplication.sharedApplication().setApplicationIconImage_(img)
+            except Exception:
+                pass
+
+        if NSThread.isMainThread():
+            _set_icon()
+        else:
+            import ctypes, ctypes.util
+            lib = ctypes.CDLL(ctypes.util.find_library("dispatch"))
+            lib.dispatch_get_main_queue.restype = ctypes.c_void_p
+            lib.dispatch_async_f.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p]
+            CFUNCTYPE = ctypes.CFUNCTYPE(None, ctypes.c_void_p)
+            cb = CFUNCTYPE(_set_icon)
+            # Keep a reference so the callback isn't GC'd before it runs
+            _apply_dock_icon._cb = cb
+            lib.dispatch_async_f(lib.dispatch_get_main_queue(), None, cb)
+        return True
+    except Exception:
+        return False
+    except Exception:
+        return False
 
 
 def _is_port_in_use(port: int, host: str = "127.0.0.1") -> bool:
@@ -1726,6 +1777,7 @@ if __name__ == "__main__":
     a = ap.parse_args()
     if a.window or a.native_window:
         gen.restore_queue(os.path.join(APP_DIR, "queue.json"))
+        _NATIVE_WINDOW = True
 
     port = a.port
     # When launched by the native Swift launcher, the launcher has already verified the port is free.

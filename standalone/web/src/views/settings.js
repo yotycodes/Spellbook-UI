@@ -112,6 +112,7 @@ export function renderSettings(s) {
     </div>`).join("");
   $("#setGen").value = s.interrogate.general_threshold; $("#setChar").value = s.interrogate.character_threshold;
   $("#setAbout").textContent = `Spellbook UI ${s.app.version || ""} · app data in ${s.app.data_dir.replace(/^\/Users\/[^/]+/, "~")}`;
+  renderDockIcon(s.appearance?.dock_icon || "dark", !!s.app?.native);
 }
 
 export async function saveSettings(changes, extra = {}) {
@@ -167,6 +168,39 @@ $("#view-settings")?.addEventListener("change", (e) => {
 
 $("#setRefresh")?.addEventListener("click", loadSettings);
 document.addEventListener("keydown", (e) => { if (e.metaKey && e.key === ",") { e.preventDefault(); showView("settings"); } });
+
+const DOCK_ICON_VARIANTS = [
+  { id: "dark",   label: "Dark",   src: "/icon.png" },
+  { id: "light",  label: "Light",  src: "/icon-light.png" },
+  { id: "accent", label: "Accent", src: "/icon-accent.png" },
+  { id: "mono",   label: "Mono",   src: "/icon-mono.png" },
+];
+
+export function renderDockIcon(current = "dark", isNative = false) {
+  const el = $("#setDockIcon");
+  if (!el) return;
+  el.innerHTML = DOCK_ICON_VARIANTS.map(({ id, label, src }) => {
+    const on = id === current;
+    return `<button class="dock-icon-opt${on ? " is-on" : ""}" role="radio" aria-checked="${on}" data-icon-variant="${id}" title="${esc(label)}">
+      <img src="${esc(src)}" alt="${esc(label)} icon" width="48" height="48" draggable="false">
+      <span>${esc(label)}</span>
+    </button>`;
+  }).join("");
+  // Hide the row in web mode — dock icon only applies to the native macOS app
+  const row = $("#setDockIconRow");
+  if (row) row.hidden = !isNative;
+}
+
+$("#setDockIcon")?.addEventListener("click", async (e) => {
+  const btn = e.target.closest("[data-icon-variant]");
+  if (!btn) return;
+  const variant = btn.dataset.iconVariant;
+  const r = await saveSettings({ dock_icon: variant });
+  if (r) {
+    renderDockIcon(r.settings.appearance?.dock_icon || variant);
+    toast(`Dock icon: ${esc(DOCK_ICON_VARIANTS.find((v) => v.id === variant)?.label || variant)}`, "info");
+  }
+});
 
 export function updateDensityButtons() {
   const d = state.density || "comfortable";
