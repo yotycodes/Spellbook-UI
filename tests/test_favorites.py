@@ -16,6 +16,18 @@ def test_collections_and_notes_persist(tmp_path):
     assert Favorites(p).ids("Sakura sheets") == set()
 
 
+def test_clear_resets_to_fresh_state(tmp_path):
+    p = str(tmp_path / "fav.json")
+    f = Favorites(p)
+    f.add("Sakura sheets", 5, "great pose")
+    f.add(None, 7)
+    f.add(None, 9, "nice")
+    assert f.clear() == 3  # 5 and 7 and 9 were collected somewhere
+    f2 = Favorites(p)
+    assert list(f2.data["collections"]) == [Favorites.DEFAULT]
+    assert f2.ids(Favorites.DEFAULT) == set() and f2.data["notes"] == {}
+
+
 def test_can_run_and_keep(tmp_path):
     lora = tmp_path / "Lora"; lora.mkdir()
     (lora / "zackary911_v2_IL.safetensors").write_text("x")

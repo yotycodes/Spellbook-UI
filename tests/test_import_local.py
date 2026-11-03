@@ -206,3 +206,62 @@ def test_export_endpoint_requires_library(tmp_path, monkeypatch):
         assert json.load(io.BytesIO(r.content))[0]["prompt"] == "x"
     finally:
         monkeypatch.setitem(S, "library_path", real)
+
+
+def _patch_reset_env(tmp_path, monkeypatch, server):
+    """Point the reset endpoint at throwaway library / favorites / thumbs folders."""
+    from lib_pl.favorites import Favorites
+    from lib_pl.library import ThumbCache
+    from server import S
+    monkeypatch.setitem(S, "library_path", str(tmp_path / "lib"))
+    monkeypatch.setattr(server, "APP_DIR", str(tmp_path / "app"))
+    monkeypatch.setattr(server, "FAV", Favorites(str(tmp_path / "app" / "favorites.json")))
+    monkeypatch.setattr(server, "THUMBS", ThumbCache(str(tmp_path / "app" / "thumbs")))
+    monkeypatch.setattr(server, "LARGE", ThumbCache(str(tmp_path / "app" / "large")))
+
+
+def test_library_reset_requires_confirmation(tmp_path, monkeypatch):
+    import server
+    from server import S
+    _patch_reset_env(tmp_path, monkeypatch, server)
+    (tmp_path / "lib").mkdir()
+    rows = [{"id": 1, "prompt": "x"}]
+    json.dump(rows, open(tmp_path / "lib" / "all-prompts.json", "w"))
+    c = _client()
+    r = c.post("/api/library/reset", json={"confirm": "yes"})
+    assert r.status_code == 400
+    # the library itself is untouched when the confirmation is wrong
+    assert json.load(open(tmp_path / "lib" / "all-prompts.json")) == rows
+
+
+def test_library_reset_backs_up_and_empties(tmp_path, monkeypatch):
+    import server
+    from lib_pl.library import Library
+    _patch_reset_env(tmp_path, monkeypatch, server)
+    (tmp_path / "lib").mkdir()
+    rows = [{"id": 1, "prompt": "x"}, {"id": 2, "prompt": "y"}]
+    json.dump(rows, open(tmp_path / "lib" / "all-prompts.json", "w"))
+    (tmp_path / "app" / "thumbs" / "1.jpg").write_text("junk")  # dir exists from ThumbCache init
+    server.FAV.add("My set", 1, "note")  # server.FAV, bound after patching — never the real favorites file
+    c = _client()
+    r = c.post("/api/library/reset", json={"confirm": "RESET", "clear_favorites": True})
+    assert r.status_code == 200
+    d = r.json()
+    assert d["ok"] and d["cleared"] == 2 and d["backups_moved"] == ["all-prompts.json"]
+    # sidecar gone entirely = fresh-install state; Library reloads empty
+    assert not os.path.exists(tmp_path / "lib" / "all-prompts.json")
+    assert Library(str(tmp_path / "lib")).rows == []
+    # backup holds the old library; favorites were copied aside, then cleared in place
+    assert json.load(open(os.path.join(d["backup_dir"], "all-prompts.json"))) == rows
+    fav_backup = json.load(open(os.path.join(d["backup_dir"], "favorites.json")))
+    assert fav_backup["collections"] == {"⭐ Favorites": [], "My set": [1]}
+    assert list(server.FAV.data["collections"]) == ["⭐ Favorites"] and server.FAV.ids("⭐ Favorites") == set()
+    assert not os.path.exists(tmp_path / "app" / "thumbs" / "1.jpg")
+
+
+def test_library_reset_idempotent_on_fresh_install(tmp_path, monkeypatch):
+    import server
+    _patch_reset_env(tmp_path, monkeypatch, server)
+    c = _client()
+    r = c.post("/api/library/reset", json={"confirm": "RESET"})
+    assert r.status_code == 200 and r.json()["ok"] and r.json()["cleared"] == 0

@@ -2,6 +2,16 @@
 
 All notable changes to Spellbook UI are documented here.
 
+## Unreleased
+
+### Added
+
+- **Library reset.** Settings → Prompt library gains a Reset button: empties
+  the imported prompt library and clears favorites + collections, moving
+  everything into a timestamped backup under app data (`library-backups/`)
+  first. Thumbnail caches are cleared too (their ids can collide after a
+  re-import). Requires a confirmation dialog; no app restart needed.
+
 ## 1.0.0 — 2026-11-01 (first public release)
 
 ### Added

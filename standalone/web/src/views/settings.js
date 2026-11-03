@@ -107,7 +107,7 @@ export function renderSettings(s) {
   }).join("");
   $("#setFolders").innerHTML = s.folders.map((f) => `<div class="set-row">
       <div class="set-main"><b>${esc(f.label)}${f.exists ? "" : `<span class="muted small"> · ${f.id === "export_dir" ? "created on first export" : "missing"}</span>`}</b><span class="muted">${esc(f.note)}</span><code title="${esc(f.path)}">${esc(f.path.replace(/^\/Users\/[^/]+/, "~"))}</code></div>
-      <div class="set-ctl"><button class="btn btn-sm" data-reveal="${esc(f.path)}" ${f.exists ? "" : "disabled"}><i class="ph ph-folder-open"></i>Show in Finder</button>
+      <div class="set-ctl">${f.id === "library_path" ? `<button class="btn btn-sm danger" data-libreset title="Empty the library — prompts, favorites and collections (a backup is kept)"><i class="ph ph-arrow-counter-clockwise"></i>Reset…</button>` : ""}<button class="btn btn-sm" data-reveal="${esc(f.path)}" ${f.exists ? "" : "disabled"}><i class="ph ph-folder-open"></i>Show in Finder</button>
         ${f.editable ? `<button class="btn btn-sm" data-change="${f.id}"><i class="ph ph-pencil-simple"></i>Change…</button>` : ""}</div>
     </div>`).join("");
   $("#setGen").value = s.interrogate.general_threshold; $("#setChar").value = s.interrogate.character_threshold;
@@ -139,6 +139,17 @@ $("#view-settings")?.addEventListener("click", async (e) => {
       toast(`${esc(f.label)} → ${esc(pick.path.replace(/^\/Users\/[^/]+/, "~"))}${r.moved ? ` · moved ${r.moved} files` : ""}`);
       if (f.id === "gen_dir") renderGallery();
       if (f.id === "library_path") newSearch?.();
+    }
+    return;
+  }
+  const rb = e.target.closest("[data-libreset]");
+  if (rb) {
+    if (!confirm("Reset the prompt library?\n\nAll prompts are emptied and favorites + collections are cleared. Everything is backed up first — see app data → library-backups.")) return;
+    const r = await api("/api/library/reset", { json: { confirm: "RESET", clear_favorites: true } }).catch((x) => (toast(esc(x.message), "err"), null));
+    if (r) {
+      newSearch?.();
+      const n = [r.cleared ? `${r.cleared} prompt${r.cleared === 1 ? "" : "s"} removed` : "", r.favorites_removed ? `${r.favorites_removed} favorites cleared` : ""].filter(Boolean).join(" · ");
+      toast(`Library reset${n ? ` — ${n}` : " — already empty"}`, "info");
     }
     return;
   }
