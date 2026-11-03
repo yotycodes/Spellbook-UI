@@ -339,7 +339,7 @@ export async function renderCharCard() {
       <div class="char-meta">${esc(d.universe || "Character")}${d.gender ? ` · ${esc(d.gender)}` : ""} · ${fmt(d.total)} prompts (${fmt(d.sfw)} SFW)</div>
       <div class="char-rows">
         <div class="char-row"><b>LoRAs</b>${d.loras.length ? d.loras.map((l) => `<span class="chip static" title="Installed"><i class="ph ph-puzzle-piece"></i>${esc(l)}</span>`).join("") : `<span class="muted">none installed for this character</span>`}</div>
-        <div class="char-row"><b>Styles</b>${d.styles.map((st) => `<button class="chip style-pick-chip${st.name === charState.style ? " is-on" : ""}" data-style="${esc(st.name)}" title="Fits ${st.count} of their prompts${st.installed ? "" : " (not one of your Krita styles)"}">${esc(st.name)}</button>`).join("")}</div>
+        <div class="char-row"><b>Styles</b>${d.styles.map((st) => `<button class="chip style-pick-chip${st.name === charState.style ? " is-on" : ""}" data-style="${esc(st.name)}" title="Fits ${st.count} of their prompts${st.installed ? "" : " (not one of your styles yet)"}">${esc(st.name)}</button>`).join("")}</div>
       </div>
     </div>
     <div class="char-actions">

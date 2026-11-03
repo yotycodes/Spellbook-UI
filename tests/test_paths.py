@@ -8,7 +8,7 @@ import paths  # noqa: E402
 
 def _clean_env(monkeypatch):
     for key in ("SPELLBOOK_ROOT", "SPELLBOOK_APP_DIR", "SPELLBOOK_FORGE",
-                "SPELLBOOK_POSE_KIT", "SPELLBOOK_KRITA_STYLES"):
+                "SPELLBOOK_POSE_KIT", "SPELLBOOK_STYLES", "SPELLBOOK_KRITA_STYLES"):
         monkeypatch.delenv(key, raising=False)
     paths.reset_cache()
 
@@ -70,6 +70,24 @@ def test_config_template_written_once(tmp_path, monkeypatch):
     assert paths.write_config_template() is True
     content = open(tmp_path / "spellbook.json").read()
     assert "app_data_dir" in content and paths.write_config_template() is False
+
+
+def test_styles_dir_defaults_to_documents_and_overrides(tmp_path, monkeypatch):
+    """Spellbook's own styles live in Documents (like the library), env > config > default."""
+    _root(monkeypatch, tmp_path, platform="darwin")
+    assert paths.styles_dir() == os.path.join(paths.documents_dir(), "Spellbook UI", "Styles")
+    (tmp_path / "spellbook.json").write_text('{"styles_dir": "~/FromConfig"}')
+    paths.reset_cache()
+    assert paths.styles_dir() == os.path.expanduser("~/FromConfig")
+    monkeypatch.setenv("SPELLBOOK_STYLES", str(tmp_path / "from-env"))
+    assert paths.styles_dir() == str(tmp_path / "from-env")
+
+
+def test_krita_styles_fallback_still_resolves(tmp_path, monkeypatch):
+    """The legacy read-only Krita source stays reachable for its merge role."""
+    _root(monkeypatch, tmp_path, platform="darwin")
+    d = paths.krita_styles_dir()
+    assert d.endswith("ai_diffusion/styles") and not d.startswith(str(tmp_path))
 
 
 def test_sources_have_no_historical_hardcode():

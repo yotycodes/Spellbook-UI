@@ -2,6 +2,19 @@
 
 All notable changes to Spellbook UI are documented here.
 
+## Unreleased
+
+### Changed
+
+- **Your styles, owned by Spellbook.** Styles now read from Spellbook's own
+  editable folder, `~/Documents/Spellbook UI/Styles/` (env
+  `SPELLBOOK_STYLES` › `spellbook.json` `styles_dir` › default), instead of
+  reaching into Krita's hidden app data. Krita's styles folder remains a
+  read-only fallback: its styles merge in under the same names when you have
+  them, and Spellbook-folder styles shadow same-named Krita ones. Every style
+  carries an `origin` tag (`spellbook` = editable, `krita` = read-only).
+  UI copy drops the "Krita styles" phasing — they're just *your styles* now.
+
 ## 1.0.0 — 2026-11-01 (first public release)
 
 ### Added

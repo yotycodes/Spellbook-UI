@@ -83,6 +83,11 @@ def library_dir():
     return os.path.join(documents_dir(), "Spellbook UI", "Library")
 
 
+def styles_dir():
+    """Spellbook's own styles folder: editable JSON styles, created and adopted on first use."""
+    return _pick("SPELLBOOK_STYLES", "styles_dir", os.path.join(documents_dir(), "Spellbook UI", "Styles"))
+
+
 def forge_dir():
     """Developer/Forge install root (overwrite via installer config)."""
     return _pick("SPELLBOOK_FORGE", "forge_dir", "~/stable-diffusion-webui-forge")
@@ -127,6 +132,7 @@ def write_config_template():
         "app_data_dir": None,
         "forge_dir": None,
         "pose_kit_dir": None,
+        "styles_dir": None,
         "krita_styles_dir": None,
         "original_protected_paths": None,
     }

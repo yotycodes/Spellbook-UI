@@ -1,5 +1,8 @@
 import json
 
+import pytest
+
+from lib_pl import kstyles
 from lib_pl.kstyles import apply, load
 
 
@@ -38,3 +41,33 @@ def test_apply_keeps_existing_lora_and_handles_no_placeholder(tmp_path):
 
 def test_missing_folder(tmp_path):
     assert load(str(tmp_path / "nope")) == []
+
+
+def test_no_fallback_by_default(tmp_path):
+    """Folder arg only. Hermetic even on machines that have a Krita styles folder installed."""
+    d = {"name": "Toon", "checkpoints": ["x.safetensors"]}
+    (tmp_path / "toon.json").write_text(json.dumps(d))
+    with pytest.MonkeyPatch.context() as mp:
+        mp.setattr(kstyles, "FALLBACK_DIR", None)
+        rows = load(str(tmp_path / "nope"))
+    assert rows == []
+
+
+def test_fallback_merges_and_shadows(tmp_path, monkeypatch):
+    """Fallback styles merge in unless a same-name style belongs to the main folder; origin tags set."""
+    main, fallback = tmp_path / "main", tmp_path / "fallback"
+    main.mkdir(); fallback.mkdir()
+    presets = str(tmp_path / "samplers.json")
+    open(presets, "w").write("{}")
+    for folder, name, flavor in ((main, "Shared", "main"), (fallback, "Shared", "fallback"),
+                                 (fallback, "Fallback Only", "")):
+        (folder / f"{name.lower().replace(' ', '-')}.json").write_text(
+            json.dumps({"name": name, "checkpoints": [f"{flavor or 'x'}.safetensors"]}))
+    monkeypatch.setattr(kstyles, "STYLES_DIR", str(main))
+    monkeypatch.setattr(kstyles, "FALLBACK_DIR", str(fallback))
+    monkeypatch.setattr(kstyles, "_presets", lambda *_: dict(kstyles.FALLBACK_PRESETS))
+    rows = load(str(main), presets)
+    assert [r["name"] for r in rows] == ["Fallback Only", "Shared"]
+    by_name = {r["name"]: r for r in rows}
+    assert by_name["Shared"]["origin"] == "spellbook" and by_name["Shared"]["checkpoint"] == "main.safetensors"
+    assert by_name["Fallback Only"]["origin"] == "krita"

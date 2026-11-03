@@ -213,28 +213,18 @@ async def _revalidate_app_files(request, call_next):
     return resp
 
 
-KRITA_STYLES_DIR = paths.krita_styles_dir()
+STYLES_DIR = paths.styles_dir()
+KRITA_STYLES_DIR = paths.krita_styles_dir()  # read-only fallback source: styles Krita users already have
 
 from lib_pl import kstyles as _kstyles  # noqa: E402
-_kstyles.STYLES_DIR = KRITA_STYLES_DIR  # single control plane: the library reads the dir the config picked
+_kstyles.STYLES_DIR = STYLES_DIR          # single control plane: the library reads the dirs the config picked
+_kstyles.FALLBACK_DIR = KRITA_STYLES_DIR
 
 
-def krita_styles():
-    """Style names from Krita AI Diffusion's user styles folder, sorted."""
-    names = set()
-    try:
-        for f in os.listdir(KRITA_STYLES_DIR):
-            if f.endswith(".json"):
-                try:
-                    with open(os.path.join(KRITA_STYLES_DIR, f)) as fh:
-                        n = json.load(fh).get("name")
-                    if n:
-                        names.add(n)
-                except (OSError, ValueError):
-                    pass
-    except OSError:
-        pass
-    return sorted(names, key=str.lower)
+def style_names():
+    """Style names, sorted (Spellbook's styles folder first; legacy Krita styles merged in)."""
+    import gen  # noqa: E402  (module-level import of gen happens later; lazy here)
+    return [s["name"] for s in gen.styles()]
 
 
 _HEROES = {}
@@ -323,7 +313,7 @@ def meta():
               "has_skeleton": bool(v["skeleton"])} for k, v in _get_poses().items()]
     return {"bases": ["All"] + BASES, "themes": ["All"] + list(THEMES) + TAG_THEMES, "ratings": RATINGS,
             "sorts": Library.SORTS, "collections": FAV.names(), "presets": presets, "engines": ENGINES,
-            "default_engine": TAGS_ONLY, "poses": poses, "heroes": _heroes(), "krita_styles": krita_styles(), "library_size": len(library().rows)}
+            "default_engine": TAGS_ONLY, "poses": poses, "heroes": _heroes(), "styles": style_names(), "library_size": len(library().rows)}
 
 
 @app.get("/api/search")

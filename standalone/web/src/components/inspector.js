@@ -55,7 +55,7 @@ export function closeInspector() {
 $("#iClose")?.addEventListener("click", closeInspector);
 
 export function fillStyles(el, suggested) {
-  const all = state.meta?.krita_styles || [];
+  const all = state.meta?.styles || [];
   const rest = all.filter((n) => n !== suggested);
   el.innerHTML = (suggested ? `<option value="${esc(suggested)}">${esc(suggested)} (suggested)</option>` : "")
     + rest.map((n) => `<option value="${esc(n)}">${esc(n)}</option>`).join("");

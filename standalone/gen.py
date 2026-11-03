@@ -22,14 +22,17 @@ _styles = {"list": [], "mtime": None}
 
 
 def styles():
-    """Krita styles, reloaded when the styles folder changes."""
+    """Styles, reloaded when either styles folder changes (Spellbook's own plus the Krita fallback)."""
     from lib_pl import kstyles
-    try:
-        m = os.path.getmtime(kstyles.STYLES_DIR)
-    except OSError:
-        m = None
-    if m != _styles["mtime"]:
-        _styles.update(list=kstyles.load(), mtime=m)
+    dirs = [kstyles.STYLES_DIR, kstyles.FALLBACK_DIR]
+    stamps = []
+    for d in dirs:
+        try:
+            stamps.append((d, os.path.getmtime(d)))
+        except OSError:
+            stamps.append((d, None))
+    if stamps != _styles["mtime"]:
+        _styles.update(list=kstyles.load(), mtime=stamps)
     return _styles["list"]
 
 

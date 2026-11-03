@@ -7,6 +7,7 @@ from .tagclean import clean
 
 STYLES_DIR = os.path.expanduser(os.environ.get("SPELLBOOK_KRITA_STYLES")
                                 or "~/Library/Application Support/krita/ai_diffusion/styles")
+FALLBACK_DIR = None  # read-only second source; the server wires paths.krita_styles_dir() in. Tests stay hermetic.
 SAMPLER_PRESETS = os.path.expanduser(os.environ.get("SPELLBOOK_KRITA_SAMPLERS")
                                      or "~/Library/Application Support/krita/pykrita/ai_diffusion/presets/samplers.json")
 
@@ -42,10 +43,25 @@ def _presets(path=SAMPLER_PRESETS):
         return dict(FALLBACK_PRESETS)
 
 
-def load(folder=STYLES_DIR, presets_path=SAMPLER_PRESETS):
+def load(folder=None, presets_path=None):
     """[style dict], sorted by name. Each: name, file, checkpoint, loras [(stem, weight)], style_prompt, negative,
-    sampler, scheduler, steps, cfg, clip_skip, arch."""
+    sampler, scheduler, steps, cfg, clip_skip, arch, origin ("spellbook" = editable; "krita" = read-only fallback).
+    Defaults read the module globals at call time, so the server can repoint folders after import. The read-only
+    FALLBACK_DIR (Krita's styles folder) merges only for the primary folder: its names never shadow the main
+    folder's. An explicitly passed folder (tests, tools) loads alone."""
+    folder = folder or STYLES_DIR
+    presets_path = presets_path or SAMPLER_PRESETS
     presets = _presets(presets_path)
+    out = _read(folder, presets, origin="spellbook")
+    if folder == STYLES_DIR and FALLBACK_DIR \
+            and os.path.abspath(os.path.expanduser(FALLBACK_DIR)) != os.path.abspath(os.path.expanduser(folder)):
+        known = {s["name"].strip().lower() for s in out}
+        out += [s for s in _read(FALLBACK_DIR, presets, origin="krita") if s["name"].strip().lower() not in known]
+    return sorted(out, key=lambda s: s["name"].lower())
+
+
+def _read(folder, presets, origin):
+    """Styles from one folder (see load for the row shape)."""
     out = []
     try:
         files = sorted(f for f in os.listdir(folder) if f.endswith(".json"))
@@ -66,8 +82,9 @@ def load(folder=STYLES_DIR, presets_path=SAMPLER_PRESETS):
             "style_prompt": d.get("style_prompt") or "{prompt}", "negative": d.get("negative_prompt") or "",
             "sampler": SAMPLERS.get(sampler, "Euler a"), "scheduler": SCHEDULERS.get(scheduler, "Automatic"),
             "steps": int(d.get("sampler_steps") or 25), "cfg": float(d.get("cfg_scale") or 6), "clip_skip": int(d.get("clip_skip") or 0),
+            "origin": origin,
         })
-    return sorted(out, key=lambda s: s["name"].lower())
+    return out
 
 
 def apply(style, prompt, negative=""):
